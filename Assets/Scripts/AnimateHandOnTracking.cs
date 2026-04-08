@@ -17,8 +17,8 @@ public class AnimateHandOnTracking : MonoBehaviour
     public string receivedData;
 
     public Animator handAnimator_udp;
-    private float targetgripValue = 0f;
-    private float currentgripValue = 0f;
+    private float[] targetFingerValues = new float[5];
+    private float[] currentFingerValues = new float[5];
     private float animationSpeed = 15f; // Adjust this for faster/slower animation
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -46,17 +46,11 @@ public class AnimateHandOnTracking : MonoBehaviour
                 // Ensure all 5 pieces of data
                 if (values.Length == 5)
                 {
-                    // Convert to floats and set animator parameters
-                    //handAnimator_udp.SetFloat("Thumb", float.Parse(values[0]));
-                    //handAnimator_udp.SetFloat("Index", float.Parse(values[1]));
-                    //handAnimator_udp.SetFloat("Middle", float.Parse(values[2]));
-                    //handAnimator_udp.SetFloat("Ring", float.Parse(values[3]));
-                    //handAnimator_udp.SetFloat("Pinky", float.Parse(values[4]));
-
-                    //handAnimator_udp.SetFloat("Grip", float.Parse(values[1])); 
-
-                    // Using Index for Grip
-                    targetgripValue = float.Parse(values[1]);
+                    // Convert to floats and set target finger values
+                    for (int i = 0; i < 5; i++)
+                    {
+                        targetFingerValues[i] = float.Parse(values[i]);
+                    }
                 }
                 Debug.Log("Received: " + text);
                 receivedData = text;
@@ -73,8 +67,14 @@ public class AnimateHandOnTracking : MonoBehaviour
     {
         if (handAnimator_udp != null)
         {
-            currentgripValue = Mathf.Lerp(currentgripValue, targetgripValue, Time.deltaTime * animationSpeed);
-            handAnimator_udp.SetFloat("Grip", currentgripValue );
+            string[] fingerNames = { "Thumb", "Index", "Middle", "Ring", "Pinky" };
+            for (int i = 0; i < 5; i++)
+            {
+                currentFingerValues[i] = Mathf.Lerp(currentFingerValues[i], targetFingerValues[i], Time.deltaTime * animationSpeed);
+                handAnimator_udp.SetFloat(fingerNames[i], currentFingerValues[i]);
+            }
+            // Debug log to verify values
+            Debug.Log("Finger Values: " + string.Join(", ", currentFingerValues));
         }
     }
 
