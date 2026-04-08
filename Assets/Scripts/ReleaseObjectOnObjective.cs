@@ -5,7 +5,7 @@ using UnityEngine;
 public class ReleaseObjectOnObjective : MonoBehaviour
 {
  
-    private string pythonIP = "127.0.0.1";
+    private string pythonIP = "192.168.0.101";
     private int pythonPort = 5006; // Must match LISTEN_PORT in Python
     private UdpClient udpClient;
 

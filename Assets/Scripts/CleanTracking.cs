@@ -23,7 +23,7 @@ public class CleanHandTracking : MonoBehaviour
     public float movementScale = 3.0f;
 
     private float[] targetCurls = new float[5];
-    private float[] currentCurls = new float[5];
+    public float[] currentCurls = new float[5];
     private Vector3 targetPos;
     private Vector3 currentPos;
 
