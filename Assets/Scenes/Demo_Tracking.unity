@@ -190,6 +190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zone
       objectReference: {fileID: 0}
+    - target: {fileID: 4386901545127764652, guid: 5e50eba45ef63694ab6dad66efcbb007, type: 3}
+      propertyPath: useGentleGrab
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1820,6 +1824,14 @@ PrefabInstance:
       propertyPath: follow
       value: 
       objectReference: {fileID: 1317293967}
+    - target: {fileID: 1575735659161826260, guid: f13bbbc9578242a44953eec81cfb27d4, type: 3}
+      propertyPath: maxGrabTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575735659161826260, guid: f13bbbc9578242a44953eec81cfb27d4, type: 3}
+      propertyPath: gentleGrabSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2065969958695736957, guid: f13bbbc9578242a44953eec81cfb27d4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.024466803
@@ -16054,11 +16066,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WebcamHandLink
   autoHand: {fileID: 1178343346}
-  positionOffset: {x: 0, y: 3.4, z: -3.8}
+  positionOffset: {x: 1.8, y: 3.4, z: -3.8}
   rotationOffset: {x: 0, y: 90, z: 180}
   movementMultiplier: 3
   followTarget: {fileID: 1049661772}
-  graspThreshold: 0.7
+  graspThreshold: 0.4
   releaseThreshold: 0.3
   wristPos: {x: 0, y: 0, z: 0}
   middleKnucklePos: {x: 0, y: 0, z: 0}
