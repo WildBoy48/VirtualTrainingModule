@@ -40,11 +40,25 @@ public class WaitingLobbyManager : MonoBehaviour
     // Status display colors
     private Color _connectedColor = Color.green;
     private Color _disconnectedColor = Color.red;
+    
+    private static WaitingLobbyManager _instance;
+    public static string CurrentMode { get; private set; } = "none";
+    public static int CurrentMiniGameID { get; private set; } = -1;
+    public static string CurrentPatientID { get; private set; } = string.Empty;
+    public static GameConfig CurrentConfig { get; private set; } = new GameConfig();
 
     // ── Unity lifecycle ────────────────────────────────────────────────────
 
     private void Awake()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
         // Validate references
         if (serverIpInputField == null)
         {
@@ -75,10 +89,46 @@ public class WaitingLobbyManager : MonoBehaviour
 
         // Initialize status display
         UpdateStatusDisplay();
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         // Attempt initial connection
         Debug.Log("[WaitingLobbyManager] Start — attempting initial connection to " + _currentServerIp);
         await ConnectToServerAsync();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex != 0)
+        {
+            serverIpInputField = null;
+            serverStatusText = null;
+            return;
+        }
+        // Rebind UI
+        serverIpInputField = FindObjectOfType<InputField>();
+        serverStatusText = FindObjectOfType<Text>();
+
+        // Re-evaluate connection state
+        _isConnected = _ws != null && _ws.State == WebSocketState.Open;
+
+        if (serverIpInputField != null)
+        {
+            serverIpInputField.onEndEdit.RemoveAllListeners(); // prevent stacking
+            serverIpInputField.onEndEdit.AddListener(OnServerIpChanged);
+            serverIpInputField.text = _currentServerIp;
+        }
+
+        UpdateStatusDisplay();
     }
 
     private void Update()
@@ -91,10 +141,12 @@ public class WaitingLobbyManager : MonoBehaviour
             CheckConnectionAndReconnect();
         }
     }
-
     private async void OnDestroy()
     {
-        Debug.Log("[WaitingLobbyManager] OnDestroy — closing WebSocket connection");
+        if (_instance != this) return;
+
+        Debug.Log("[WaitingLobbyManager] OnDestroy — closing WebSocket connection");        
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         await DisconnectAsync();
     }
 
@@ -288,16 +340,15 @@ public class WaitingLobbyManager : MonoBehaviour
             return;
         }
 
-        if (_isConnected)
-        {
-            serverStatusText.text = "● Connected";
-            serverStatusText.color = _connectedColor;
-        }
-        else
-        {
-            serverStatusText.text = "● Disconnected";
-            serverStatusText.color = _disconnectedColor;
-        }
+        bool connected = IsActuallyConnected();
+
+        serverStatusText.text = connected ? "● Connected" : "● Disconnected";
+        serverStatusText.color = connected ? _connectedColor : _disconnectedColor;
+    }
+
+    private bool IsActuallyConnected()
+    {
+        return _ws != null && _ws.State == WebSocketState.Open;
     }
 
     // ── Public API ─────────────────────────────────────────────────────────
@@ -307,15 +358,94 @@ public class WaitingLobbyManager : MonoBehaviour
         try
         {
             var command = JsonUtility.FromJson<ServerCommand>(message);
-            if (command != null && string.Equals(command.type, "load_scene", StringComparison.OrdinalIgnoreCase))
+            if (command == null)
             {
-                Debug.Log($"[WaitingLobbyManager] Loading scene ID {command.sceneID}");
+                return;
+            }
+
+            if (string.Equals(command.type, "load_scene", StringComparison.OrdinalIgnoreCase))
+            {
+                SetGameMode(command.mode);
+                if (command.config != null)
+                {
+                    CurrentConfig = command.config;
+                }
+                if (!string.IsNullOrEmpty(command.patientID))
+                {
+                    CurrentPatientID = command.patientID;
+                }
+                if (command.miniGameID > 0)
+                {
+                    CurrentMiniGameID = command.miniGameID;
+                }
+
+                Debug.Log($"[WaitingLobbyManager] Loading scene ID {command.sceneID} in mode {CurrentMode}");
                 SceneManager.LoadScene(command.sceneID);
+            }
+            else if (string.Equals(command.type, "stop_mode", StringComparison.OrdinalIgnoreCase))
+            {
+                Debug.Log("[WaitingLobbyManager] Received stop_mode command, returning to lobby.");
+                ResetModeState(true);
+                SceneManager.LoadScene(0);
             }
         }
         catch (Exception ex)
         {
             Debug.LogWarning("[WaitingLobbyManager] Failed to parse server command: " + ex.Message);
+        }
+    }
+
+    public void ExportParameters(GameConfig config)
+    {
+        if (_ws == null || _ws.State != WebSocketState.Open)
+        {
+            Debug.LogWarning("[WaitingLobbyManager] Cannot export parameters: not connected to server");
+            return;
+        }
+
+        var exportMessage = new ExportParametersMessage
+        {
+            type = "export_parameters",
+            config = config
+        };
+
+        var json = JsonUtility.ToJson(exportMessage);
+        var buffer = Encoding.UTF8.GetBytes(json);
+        _ws.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+        Debug.Log("[WaitingLobbyManager] Exported parameters to server: " + json);
+    }
+
+    private static void SetGameMode(string mode)
+    {
+        if (string.IsNullOrWhiteSpace(mode))
+        {
+            CurrentMode = "none";
+            return;
+        }
+
+        CurrentMode = mode.ToLowerInvariant();
+    }
+
+    public static void ExportParametersStatic(GameConfig config)
+    {
+        if (_instance == null)
+        {
+            Debug.LogWarning("[WaitingLobbyManager] Cannot export parameters: instance is not available");
+            return;
+        }
+
+        _instance.ExportParameters(config);
+    }
+
+    private void ResetModeState(bool discardConfig)
+    {
+        CurrentMode = "none";
+        CurrentMiniGameID = -1;
+        CurrentPatientID = string.Empty;
+
+        if (discardConfig)
+        {
+            CurrentConfig = new GameConfig();
         }
     }
 
@@ -353,6 +483,31 @@ public class ServerCommand
 {
     public string type;
     public int sceneID;
+    public string mode;
+    public int miniGameID;
+    public string patientID;
+    public GameConfig config;
+}
+
+[Serializable]
+public class GameConfig
+{
+    public bool audioCues;
+    public bool visualCues;
+    public int sessionDuration;
+    public int targetScore;
+    public string device;
+    public int backgroundDetail;
+    public float seat;
+    public bool hapticFeedback;
+    public int bci_minGripTime;
+}
+
+[Serializable]
+public class ExportParametersMessage
+{
+    public string type;
+    public GameConfig config;
 }
 
 /// <summary>

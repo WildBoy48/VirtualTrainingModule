@@ -477,7 +477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503725, guid: a2d027c70035937458cd9546d226b3fc, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: a2d027c70035937458cd9546d226b3fc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -621,7 +621,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1133652591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1400,7 +1400,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 1.38}
-  m_SizeDelta: {x: 950, y: 450}
+  m_SizeDelta: {x: 230, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4015128328014983162
 MonoBehaviour:
@@ -1748,7 +1748,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 190}
+  m_SizeDelta: {x: 230, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8180815008355225879
 Canvas:
