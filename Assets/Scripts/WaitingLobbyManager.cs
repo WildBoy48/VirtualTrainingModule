@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -245,6 +246,7 @@ public class WaitingLobbyManager : MonoBehaviour
                 {
                     string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
                     Debug.Log("[WaitingLobbyManager] Received message from server: " + message);
+                    HandleServerCommand(message);
                 }
             }
         }
@@ -300,6 +302,25 @@ public class WaitingLobbyManager : MonoBehaviour
 
     // ── Public API ─────────────────────────────────────────────────────────
 
+    private void HandleServerCommand(string message)
+    {
+        try
+        {
+            var command = JsonUtility.FromJson<ServerCommand>(message);
+            if (command != null && string.Equals(command.type, "load_scene", StringComparison.OrdinalIgnoreCase))
+            {
+                Debug.Log($"[WaitingLobbyManager] Loading scene ID {command.sceneID}");
+                SceneManager.LoadScene(command.sceneID);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning("[WaitingLobbyManager] Failed to parse server command: " + ex.Message);
+        }
+    }
+
+    // ── Public API ─────────────────────────────────────────────────────────
+
     /// <summary>
     /// Check if the client is currently connected to the server
     /// </summary>
@@ -325,6 +346,13 @@ public class WaitingLobbyManager : MonoBehaviour
         _disconnectedColor = disconnected;
         UpdateStatusDisplay();
     }
+}
+
+[Serializable]
+public class ServerCommand
+{
+    public string type;
+    public int sceneID;
 }
 
 /// <summary>
