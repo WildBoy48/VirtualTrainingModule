@@ -8,8 +8,8 @@ OcclusionCullingSettings:
     smallestOccluder: 5
     smallestHole: 0.25
     backfaceThreshold: 100
-  m_SceneGUID: 00000000000000000000000000000000
-  m_OcclusionCullingData: {fileID: 0}
+  m_SceneGUID: 2f0054f07b798d74680c5e29b52dc02f
+  m_OcclusionCullingData: {fileID: 36300000, guid: 695a7a5074e97a341822a391045d85de, type: 2}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
@@ -16122,7 +16122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6068ec0fc56a68549b142ff8f2d1e675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UDPSenderAndTester
-  pythonIP: 192.168.1.234
+  pythonIP: 192.168.0.101
   sendPort: 5006
   handLink: {fileID: 2086508820}
 --- !u!1 &2097769180
