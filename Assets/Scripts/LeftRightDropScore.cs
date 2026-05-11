@@ -68,9 +68,11 @@ public class LeftRightDropScore : MonoBehaviour
         {
             Debug.Log($"[LeftRightDropScore] Target entered drop counter collider: {other.name}.");
 
-            if (hasPassedToRightSide && !hasScoredThisDrop)
+            //if (hasPassedToRightSide &&  !hasScoredThisDrop)
+            if(wasOnLeftSide && !hasScoredThisDrop)
             {
                 score += 1;
+                ScoreManager.Instance.AddScore(1);
                 hasScoredThisDrop = true;
                 Debug.Log($"[LeftRightDropScore] Score awarded! Current score = {score}.");
             }
