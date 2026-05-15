@@ -1,0 +1,5 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; width: 118px;">
+        <ui:Label text="0%" name="percentage-label" style="-unity-text-align: upper-center; width: 55px; height: 25px; -unity-font-definition: resource(&quot;Righteous-Big&quot;); font-size: 5px; -unity-font-style: bold;"/>
+    </ui:VisualElement>
+</ui:UXML>

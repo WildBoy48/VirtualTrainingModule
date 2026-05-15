@@ -11,8 +11,10 @@ public class HandPinchMeta : MonoBehaviour
     // <summary>
 
     [Header("Pinch Settings")]
-    public float pinchStartDistance = 0.025f;
-    public float pinchEndDistance = 0.04f;
+    public float pinchStartDistance = 0.02f;
+    public float pinchEndDistance = 0.05f;
+    public float pinchCooldown = 0.2f;
+    private float lastPinchTime;
 
     [Header("Debug")]
     public bool debugLogs = true;
@@ -23,15 +25,16 @@ public class HandPinchMeta : MonoBehaviour
     [Header("Auto Hand")]
     public Hand hand;
 
+    public enum HandType { Left,Right };
+    public HandType handType;
 
     private bool isLeftHand;
     private bool isPinching;
+    public bool isPinchingIntent;
 
 
     void Start()
     {
-        isLeftHand = gameObject.name.ToLower().Contains("l");
-
         handSubsystem = XRGeneralSettings.Instance?
             .Manager?
             .activeLoader?
@@ -46,7 +49,7 @@ public class HandPinchMeta : MonoBehaviour
         if (handSubsystem == null)
             return;
 
-        XRHand xrhand = isLeftHand ? handSubsystem.leftHand : handSubsystem.rightHand;
+        XRHand xrhand = handType == HandType.Left ? handSubsystem.leftHand : handSubsystem.rightHand;
         if (!xrhand.isTracked)
             return;
 
@@ -59,18 +62,18 @@ public class HandPinchMeta : MonoBehaviour
             return;
 
         float distance = Vector3.Distance(thumbPose.position, indexPose.position);
+        //Debug.Log($"Pinch: {isPinching}... Distance: {distance}");
 
-        if(!isPinching && distance < pinchStartDistance)
+        if (!isPinching && distance < pinchStartDistance && Time.time - lastPinchTime > pinchCooldown)
         {
             isPinching = true;
-            if(debugLogs)
-            {
-                Debug.Log($"{gameObject.name} Pinch Start");
-            }
+            lastPinchTime = Time.time;
+            if (debugLogs) Debug.Log($"{gameObject.name} Pinch Start");
 
             if(hand != null)
             {
-                hand.Grab();
+              hand.Grab();
+                Debug.Log($"Attempting grab, objectts in range: {hand.holdingObj}");
             }
         }
 

@@ -315,7 +315,7 @@
     },
     "com.unity.xr.hands": {
       "version": "1.7.3",
-      "depth": 0,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.xr": "1.0.0",
