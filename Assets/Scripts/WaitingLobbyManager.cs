@@ -42,7 +42,7 @@ public class WaitingLobbyManager : MonoBehaviour
     private Color _disconnectedColor = Color.red;
     
     private static WaitingLobbyManager _instance;
-    public static string CurrentMode { get; private set; } = "none";
+    public static string CurrentMode { get; set; } = "none";
     public static int CurrentMiniGameID { get; private set; } = -1;
     public static string CurrentPatientID { get; private set; } = string.Empty;
     public static GameConfig CurrentConfig { get; private set; } = new GameConfig();
@@ -385,6 +385,9 @@ public class WaitingLobbyManager : MonoBehaviour
                     CurrentMiniGameID = command.miniGameID;
                 }
 
+                SeatHeight = CurrentConfig.seatHeight;
+                BackgroundDetail = CurrentConfig.backgroundDetail;
+
                 Debug.Log($"[WaitingLobbyManager] Loading scene ID {command.sceneID} in mode {CurrentMode}");
                 SceneManager.LoadScene(command.sceneID);
             }
@@ -401,7 +404,7 @@ public class WaitingLobbyManager : MonoBehaviour
         }
     }
 
-    public void ExportParameters(GameConfig config)
+    public void ExportParameters()
     {
         if (_ws == null || _ws.State != WebSocketState.Open)
         {
@@ -412,7 +415,7 @@ public class WaitingLobbyManager : MonoBehaviour
         var exportMessage = new ExportParametersMessage
         {
             type = "export_parameters",
-            config = config
+            config = WaitingLobbyManager.CurrentConfig
         };
 
         var json = JsonUtility.ToJson(exportMessage);
@@ -432,7 +435,7 @@ public class WaitingLobbyManager : MonoBehaviour
         CurrentMode = mode.ToLowerInvariant();
     }
 
-    public static void ExportParametersStatic(GameConfig config)
+    public static void ExportParametersStatic()
     {
         if (_instance == null)
         {
@@ -440,7 +443,7 @@ public class WaitingLobbyManager : MonoBehaviour
             return;
         }
 
-        _instance.ExportParameters(config);
+        _instance.ExportParameters();
     }
 
     private void ResetModeState(bool discardConfig)
@@ -504,7 +507,7 @@ public class GameConfig
     public int targetScore;
     public string device;
     public int backgroundDetail;
-    public float seat;
+    public float seatHeight;
     public bool hapticFeedback;
     public int bci_minGripTime;
 }

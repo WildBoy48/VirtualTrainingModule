@@ -7731,8 +7731,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1414804454}
-  - component: {fileID: 1414804453}
-  - component: {fileID: 1414804455}
   - component: {fileID: 1414804456}
   m_Layer: 0
   m_Name: Session Controller
@@ -7741,19 +7739,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1414804453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1414804452}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b769f4f94f2a6045a1d909538e1f046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameStatsReporter
-  serverUrl: ws://localhost:3000
 --- !u!4 &1414804454
 Transform:
   m_ObjectHideFlags: 0
@@ -7769,21 +7754,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1414804455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1414804452}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d279de31df478024aab58a622b442c94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameStatsTestSender
-  sendInterval: 0.1
-  maxScore: 1000000
-  maxErrors: 200
 --- !u!114 &1414804456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7796,6 +7766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de657114a78dd074cb59fe3017693297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiniGameManager
+  SessionParametersUI: {fileID: 738892660300831826}
   SessionParametersDropdown: {fileID: 1544044798078555745}
   Level2: {fileID: 2017642284}
   Level3: {fileID: 305813169}

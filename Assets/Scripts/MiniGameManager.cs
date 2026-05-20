@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MiniGameManager : MonoBehaviour
 {
-
+    [SerializeField] private GameObject SessionParametersUI;
     [SerializeField] private Dropdown SessionParametersDropdown;
     [SerializeField] private GameObject Level2;
     [SerializeField] private GameObject Level3;
@@ -15,10 +15,34 @@ public class MiniGameManager : MonoBehaviour
     private int selectedValue;
     private float seatHeightValue;
 
+    void Awake()
+    {
+        Level2.SetActive(false);
+        Level3.SetActive(false);
+        SessionParametersUI.SetActive(false);
+        Chair.SetActive(true);
+
+        Debug.Log("[MiniGameManager] Awake called. Background Detail: " + WaitingLobbyManager.BackgroundDetail);
+        Debug.Log("[MiniGameManager] Awake called. Seat Height: " + WaitingLobbyManager.SeatHeight);
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if (WaitingLobbyManager.CurrentMode == "setup")
+        {
+            SessionParametersUI.SetActive(true);
+        }
+        else
+        {
+            SessionParametersUI.SetActive(false);
+        }
+
+        SessionParametersDropdown.value = WaitingLobbyManager.BackgroundDetail - 1;
+        SeatHeightSlider.value = WaitingLobbyManager.SeatHeight;
+        SeatHeightInputField.text = WaitingLobbyManager.SeatHeight.ToString("F2");
+        GetBackgroundDetailValue();
+        GetSeatHeightValue();
     }
 
     // Update is called once per frame
@@ -65,6 +89,8 @@ public class MiniGameManager : MonoBehaviour
         
         Debug.Log("Seat Height set to: " + WaitingLobbyManager.SeatHeight);
         Debug.Log("Background Detail set to: " + WaitingLobbyManager.BackgroundDetail);
+
+        WaitingLobbyManager.ExportParametersStatic();
         SceneManager.LoadScene(0);
     }
 
