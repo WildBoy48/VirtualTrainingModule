@@ -10,6 +10,7 @@ public class MiniGameManager : MonoBehaviour
     [SerializeField] private GameObject Level3;
     [SerializeField] private Slider SeatHeightSlider;
     [SerializeField] private InputField SeatHeightInputField;
+    [SerializeField] private GameObject Chair;
 
     private int selectedValue;
     private float seatHeightValue;
@@ -54,14 +55,16 @@ public class MiniGameManager : MonoBehaviour
         Debug.Log("Slider value: " + seatHeightValue);
 
         SeatHeightInputField.text = seatHeightValue.ToString("F2");
+        Chair.transform.position = new Vector3(Chair.transform.position.x, seatHeightValue, Chair.transform.position.z);
     }
 
     public void SaveSessionParameters()
     {
-        //PlayerPrefs.SetInt("SelectedValue", selectedValue);
-        //PlayerPrefs.SetFloat("SeatHeightValue", seatHeightValue);
-        Debug.Log("Session parameters saved.");
-
+        WaitingLobbyManager.SeatHeight = seatHeightValue;
+        WaitingLobbyManager.BackgroundDetail = selectedValue + 1;
+        
+        Debug.Log("Seat Height set to: " + WaitingLobbyManager.SeatHeight);
+        Debug.Log("Background Detail set to: " + WaitingLobbyManager.BackgroundDetail);
         SceneManager.LoadScene(0);
     }
 
@@ -78,6 +81,7 @@ public class MiniGameManager : MonoBehaviour
             Debug.Log("Input field value: " + seatHeightValue);
 
             SeatHeightSlider.value = seatHeightValue;
+            Chair.transform.position = new Vector3(Chair.transform.position.x, seatHeightValue, Chair.transform.position.z);
         }
         else
         {

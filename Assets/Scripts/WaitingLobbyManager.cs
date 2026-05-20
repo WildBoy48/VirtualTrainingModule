@@ -47,6 +47,10 @@ public class WaitingLobbyManager : MonoBehaviour
     public static string CurrentPatientID { get; private set; } = string.Empty;
     public static GameConfig CurrentConfig { get; private set; } = new GameConfig();
 
+    // Scene Setup Settings
+    public static float SeatHeight { get; set; } = 1f;
+    public static int BackgroundDetail { get; set; } = 1;
+
     // ── Unity lifecycle ────────────────────────────────────────────────────
 
     private void Awake()
@@ -129,6 +133,8 @@ public class WaitingLobbyManager : MonoBehaviour
         }
 
         UpdateStatusDisplay();
+        Debug.Log("[WaitingLobbyManager] Seat Height: " + SeatHeight);
+        Debug.Log("[WaitingLobbyManager] Background Detail: " + BackgroundDetail);
     }
 
     private void Update()
