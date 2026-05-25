@@ -8,6 +8,9 @@ public class ObjectRespawn : MonoBehaviour
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
+    private Vector3 respawnPosition;
+    private Quaternion respawnRotation;
+
     private Rigidbody rb;
     private Grabbable grabbable;
 
@@ -15,12 +18,15 @@ public class ObjectRespawn : MonoBehaviour
     {
         initialPosition = transform.position;
         initialRotation = transform.rotation;
+
+        UpdateRespawnPoint(transform.position, transform.rotation);
         rb = GetComponent<Rigidbody>();
         grabbable = GetComponent<Grabbable>();
     }
 
     public void Respawn()
     {
+      
         if(grabbable != null && grabbable.IsHeld())
         {
             grabbable.ForceHandsRelease();
@@ -31,8 +37,13 @@ public class ObjectRespawn : MonoBehaviour
             rb.linearVelocity = Vector3.zero;
         }
 
-        transform.position = initialPosition;
-        transform.rotation = initialRotation;
+        transform.position = respawnPosition;
+        transform.rotation = respawnRotation;
         Debug.Log($"[ObjectRespawn] {gameObject.name} was returned to the table.");
+    }
+
+    public void UpdateRespawnPoint(Vector3 position, Quaternion rotation) {
+        respawnPosition = position;
+        respawnRotation = rotation; 
     }
 }

@@ -4,7 +4,7 @@ public class KillZone : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        ObjectRespawn respawnScript = other.GetComponent<ObjectRespawn>();
+        ObjectRespawn respawnScript = other.GetComponentInParent<ObjectRespawn>();
         
         if(respawnScript != null)
         {
