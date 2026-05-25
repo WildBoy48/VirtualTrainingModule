@@ -7791,6 +7791,9 @@ PrefabInstance:
       addedObject: {fileID: 1657274294}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1657274295}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1657274288}
   m_SourcePrefab: {fileID: 100100000, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
 --- !u!1 &1657274287 stripped
@@ -7926,6 +7929,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2559a1c10552348a32ab37896b567a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectRespawn
+--- !u!114 &1657274295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657274287}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e59b1e3e583ba42b29bb71cfb69811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HardwareProximityTrigger
+  proximityRadius: 0.2
 --- !u!1 &1692109266
 GameObject:
   m_ObjectHideFlags: 0
