@@ -404,7 +404,7 @@ public class WaitingLobbyManager : MonoBehaviour
         }
     }
 
-    public void ExportParameters()
+    public async Task ExportParametersAsync()
     {
         if (_ws == null || _ws.State != WebSocketState.Open)
         {
@@ -412,16 +412,30 @@ public class WaitingLobbyManager : MonoBehaviour
             return;
         }
 
+        // Send only the setup fields required by the therapist app in setup mode
+        var setupConfig = new ExportSetupConfig
+        {
+            backgroundDetail = WaitingLobbyManager.BackgroundDetail,
+            seat = WaitingLobbyManager.SeatHeight
+        };
+
         var exportMessage = new ExportParametersMessage
         {
             type = "export_parameters",
-            config = WaitingLobbyManager.CurrentConfig
+            config = setupConfig
         };
 
         var json = JsonUtility.ToJson(exportMessage);
         var buffer = Encoding.UTF8.GetBytes(json);
-        _ws.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
-        Debug.Log("[WaitingLobbyManager] Exported parameters to server: " + json);
+        try
+        {
+            await _ws.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+            Debug.Log("[WaitingLobbyManager] Exported setup parameters to server: " + json);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning("[WaitingLobbyManager] Failed to send export message: " + ex.Message);
+        }
     }
 
     private static void SetGameMode(string mode)
@@ -435,7 +449,7 @@ public class WaitingLobbyManager : MonoBehaviour
         CurrentMode = mode.ToLowerInvariant();
     }
 
-    public static void ExportParametersStatic()
+    public static async Task ExportParametersStaticAsync()
     {
         if (_instance == null)
         {
@@ -443,7 +457,7 @@ public class WaitingLobbyManager : MonoBehaviour
             return;
         }
 
-        _instance.ExportParameters();
+        await _instance.ExportParametersAsync();
     }
 
     private void ResetModeState(bool discardConfig)
@@ -516,7 +530,14 @@ public class GameConfig
 public class ExportParametersMessage
 {
     public string type;
-    public GameConfig config;
+    public ExportSetupConfig config;
+}
+
+[Serializable]
+public class ExportSetupConfig
+{
+    public int backgroundDetail;
+    public float seat;
 }
 
 /// <summary>

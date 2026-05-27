@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 
 public class MiniGameManager : MonoBehaviour
@@ -82,7 +83,7 @@ public class MiniGameManager : MonoBehaviour
         Chair.transform.position = new Vector3(Chair.transform.position.x, seatHeightValue, Chair.transform.position.z);
     }
 
-    public void SaveSessionParameters()
+    public async void SaveSessionParameters()
     {
         WaitingLobbyManager.SeatHeight = seatHeightValue;
         WaitingLobbyManager.BackgroundDetail = selectedValue + 1;
@@ -90,7 +91,8 @@ public class MiniGameManager : MonoBehaviour
         Debug.Log("Seat Height set to: " + WaitingLobbyManager.SeatHeight);
         Debug.Log("Background Detail set to: " + WaitingLobbyManager.BackgroundDetail);
 
-        WaitingLobbyManager.ExportParametersStatic();
+        // Await export to ensure therapist app receives updated values before we change scene
+        await WaitingLobbyManager.ExportParametersStaticAsync();
         SceneManager.LoadScene(0);
     }
 
