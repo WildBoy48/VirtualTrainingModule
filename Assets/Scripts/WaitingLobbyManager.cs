@@ -50,6 +50,7 @@ public class WaitingLobbyManager : MonoBehaviour
     // Scene Setup Settings
     public static float SeatHeight { get; set; } = 1f;
     public static int BackgroundDetail { get; set; } = 1;
+    public static bool VisualCues { get; set; } = false;
 
     // ── Unity lifecycle ────────────────────────────────────────────────────
 
@@ -387,6 +388,7 @@ public class WaitingLobbyManager : MonoBehaviour
 
                 SeatHeight = CurrentConfig.seatHeight;
                 BackgroundDetail = CurrentConfig.backgroundDetail;
+                VisualCues = CurrentConfig.visualCues;
 
                 Debug.Log($"[WaitingLobbyManager] Loading scene ID {command.sceneID} in mode {CurrentMode}");
                 SceneManager.LoadScene(command.sceneID);

@@ -7,21 +7,29 @@ public class MiniGameManager : MonoBehaviour
 {
     [SerializeField] private GameObject SessionParametersUI;
     [SerializeField] private Dropdown SessionParametersDropdown;
+    [SerializeField] private GameObject Ceiling;
+    [SerializeField] private GameObject Level1;
     [SerializeField] private GameObject Level2;
     [SerializeField] private GameObject Level3;
+    [SerializeField] private GameObject Level4;
     [SerializeField] private Slider SeatHeightSlider;
     [SerializeField] private InputField SeatHeightInputField;
     [SerializeField] private GameObject Chair;
+    [SerializeField] private GameObject ScoreUI;
 
     private int selectedValue;
     private float seatHeightValue;
 
     void Awake()
     {
+        Level1.SetActive(true);
         Level2.SetActive(false);
         Level3.SetActive(false);
+        Level4.SetActive(false);
+        Ceiling.SetActive(true);
         SessionParametersUI.SetActive(false);
         Chair.SetActive(true);
+        ScoreUI.SetActive(false);
 
         Debug.Log("[MiniGameManager] Awake called. Background Detail: " + WaitingLobbyManager.BackgroundDetail);
         Debug.Log("[MiniGameManager] Awake called. Seat Height: " + WaitingLobbyManager.SeatHeight);
@@ -33,10 +41,22 @@ public class MiniGameManager : MonoBehaviour
         if (WaitingLobbyManager.CurrentMode == "setup")
         {
             SessionParametersUI.SetActive(true);
+            ScoreUI.SetActive(false);
+        }
+        else if (WaitingLobbyManager.CurrentMode == "calibration")
+        {
+            SessionParametersUI.SetActive(false);
+            ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
+        }
+        else if (WaitingLobbyManager.CurrentMode == "session")
+        {
+            SessionParametersUI.SetActive(false);
+            ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
         }
         else
         {
             SessionParametersUI.SetActive(false);
+            ScoreUI.SetActive(false);
         }
 
         SessionParametersDropdown.value = WaitingLobbyManager.BackgroundDetail - 1;
@@ -59,18 +79,31 @@ public class MiniGameManager : MonoBehaviour
 
         if (selectedValue == 0)
         {
+            Level1.SetActive(true);
             Level2.SetActive(false);
             Level3.SetActive(false);
+            Level4.SetActive(false);
         }
         else if (selectedValue == 1)
         {
+            Level1.SetActive(false);
             Level2.SetActive(true);
             Level3.SetActive(false);
+            Level4.SetActive(false);
         }
         else if (selectedValue == 2)
         {
+            Level1.SetActive(false);
             Level2.SetActive(true);
             Level3.SetActive(true);
+            Level4.SetActive(false);
+        }
+        else if (selectedValue == 3)
+        {
+            Level1.SetActive(false);
+            Level2.SetActive(true);
+            Level3.SetActive(true);
+            Level4.SetActive(true);
         }
     }
 
