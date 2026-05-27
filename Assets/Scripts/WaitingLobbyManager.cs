@@ -52,6 +52,20 @@ public class WaitingLobbyManager : MonoBehaviour
     public static int BackgroundDetail { get; set; } = 1;
     public static bool VisualCues { get; set; } = false;
 
+    // Exoskeleton Performance Metrics
+    public static int totalScores { get;set; } = 0;
+    public static int totalDrops { get; set; } = 0;
+    public static int totalMisses { get; set; } = 0;
+    public static int totalRepetitions { get; set; } = 0;
+    public static float totalAccuracy { get; set; } = 0;
+    public static float repTotalTime { get; set; } = 0f;
+    public static float repReactionTime { get; set; } = 0f;
+    public static float repMovingTime { get; set; } = 0f;
+    public static float repSpaceExplored { get; set; } = 0f;
+    public static float repMaxHorizontalReach { get; set; } = 0f;
+    public static float repIdealPathLength { get; set; } = 0f;
+
+
     // ── Unity lifecycle ────────────────────────────────────────────────────
 
     private void Awake()

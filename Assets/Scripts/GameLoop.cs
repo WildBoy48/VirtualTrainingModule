@@ -12,7 +12,11 @@ public class GameLoop : MonoBehaviour
     [Tooltip("How long it takes to vanish/appear in seconds")]
     public float animationDuration = 0.5f;
 
-   public void ProcessSuccessRoutine(GameObject targetObject)
+    // Data Tracking Script
+    public TherapyDataTracker dataTracker;
+
+
+    public void ProcessSuccessRoutine(GameObject targetObject)
     {
         StartCoroutine(RespawnRoutine(targetObject));
     }
@@ -64,6 +68,8 @@ public class GameLoop : MonoBehaviour
             yield return null;
         }
         respawnObject.transform.localScale = originalScale;
+
+        if (dataTracker != null) dataTracker.StartNewRepetition(newSpawnPosition);
 
         if(rb != null)
         {

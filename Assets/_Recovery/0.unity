@@ -8289,6 +8289,7 @@ MonoBehaviour:
   repSpaceExplored: 0
   repMaxHorizontalReach: 0
   repMaxFingerBend: 0
+  repIdealPathLength: 0
   repTightestGrip: 1
   attemptThreshold: 0.05
   resetThreshold: 0.2
@@ -9529,7 +9530,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1554
+      value: 1.1546
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
       propertyPath: m_LocalPosition.z
