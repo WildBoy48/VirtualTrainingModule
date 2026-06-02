@@ -19,7 +19,8 @@ public class GameStatsReporter : MonoBehaviour
     public static GameStatsReporter Instance { get; private set; }
 
     [Tooltip("WebSocket URL of the relay server")]
-    [SerializeField] private string serverUrl = "ws://localhost:3000";
+    [SerializeField] string serverIP = "localhost"; // Default to localhost for development
+    private string serverUrl = "";
 
     private ClientWebSocket _ws;
     private CancellationTokenSource _cts;
@@ -37,6 +38,15 @@ public class GameStatsReporter : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        if (WaitingLobbyManager.Instance != null)
+        {
+            serverUrl = "ws://" + WaitingLobbyManager._currentServerIp + ":3000";
+        }
+        else
+        {
+            serverUrl = "ws://" + serverIP + ":3000";
+        }
         Debug.Log("[GameStatsReporter] Awake — instance created, target server: " + serverUrl);
     }
 
@@ -49,12 +59,14 @@ public class GameStatsReporter : MonoBehaviour
     private async void OnDestroy()
     {
         Debug.Log("[GameStatsReporter] OnDestroy — closing connection.");
+        ReportSessionEnd();
         await CloseAsync();
     }
 
     private async void OnApplicationQuit()
     {
         Debug.Log("[GameStatsReporter] OnApplicationQuit — closing connection.");
+        ReportSessionEnd();
         await CloseAsync();
     }
 
@@ -84,6 +96,17 @@ public class GameStatsReporter : MonoBehaviour
         _ = SendAsync("{\"type\":\"session_end\"}");
     }
 
+    public void ReportStatsFullGrab(int totalScore, int totalDrops, int totalMisses, int totalReps, float totalAccuracy, 
+        float repTotalTime, float repReactionTime, float repMovingTime, float repSpaceExplored, float repMaxHorizontalReach, float repIdealPathLength)
+    {
+        Debug.Log($"<color=blue>[DATA FULL GRAB]</color> Total Score: {totalScore} | Total Drops: {totalDrops} | Total Misses: {totalMisses} | Total Reps: {totalReps} | Total Accuracy: {totalAccuracy:F2}%");
+        Debug.Log($"<color=blue>[DATA REP DETAILS]</color> Rep Time: {repTotalTime:F2}s | Reaction Time: {repReactionTime:F2}s | Moving Time: {repMovingTime:F2}s | Space Explored: {repSpaceExplored:F2}m | Max Reach: {repMaxHorizontalReach}m | Ideal Path Length: {repIdealPathLength:F2}m");
+
+        string json = $"{{\"type\":\"full_grab\",\"totalScore\":{totalScore},\"totalDrops\":{totalDrops},\"totalMisses\":{totalMisses},\"totalReps\":{totalReps},\"totalAccuracy\":{totalAccuracy:F2}," +
+                      $"\"repTotalTime\":{repTotalTime:F2},\"repReactionTime\":{repReactionTime:F2},\"repMovingTime\":{repMovingTime:F2}," +
+                      $"\"repSpaceExplored\":{repSpaceExplored:F2},\"repMaxHorizontalReach\":{repMaxHorizontalReach:F2},\"repIdealPathLength\":{repIdealPathLength:F2}}}";
+        _ = SendAsync(json);
+    }
     // ── Internal ───────────────────────────────────────────────────────────
 
     private async Task ConnectAsync()

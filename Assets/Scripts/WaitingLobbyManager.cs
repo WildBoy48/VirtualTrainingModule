@@ -34,14 +34,14 @@ public class WaitingLobbyManager : MonoBehaviour
     private ClientWebSocket _ws;
     private CancellationTokenSource _cts;
     private bool _isConnected = false;
-    private string _currentServerIp;
+    public static string _currentServerIp;
     private float _lastConnectionCheckTime;
 
     // Status display colors
     private Color _connectedColor = Color.green;
     private Color _disconnectedColor = Color.red;
     
-    private static WaitingLobbyManager _instance;
+    public static WaitingLobbyManager Instance { get; private set; }
     public static string CurrentMode { get; set; } = "none";
     public static int CurrentMiniGameID { get; private set; } = -1;
     public static string CurrentPatientID { get; private set; } = string.Empty;
@@ -52,31 +52,17 @@ public class WaitingLobbyManager : MonoBehaviour
     public static int BackgroundDetail { get; set; } = 1;
     public static bool VisualCues { get; set; } = false;
 
-    // Exoskeleton Performance Metrics
-    public static int totalScores { get;set; } = 0;
-    public static int totalDrops { get; set; } = 0;
-    public static int totalMisses { get; set; } = 0;
-    public static int totalRepetitions { get; set; } = 0;
-    public static float totalAccuracy { get; set; } = 0;
-    public static float repTotalTime { get; set; } = 0f;
-    public static float repReactionTime { get; set; } = 0f;
-    public static float repMovingTime { get; set; } = 0f;
-    public static float repSpaceExplored { get; set; } = 0f;
-    public static float repMaxHorizontalReach { get; set; } = 0f;
-    public static float repIdealPathLength { get; set; } = 0f;
-
-
     // ── Unity lifecycle ────────────────────────────────────────────────────
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        _instance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
         // Validate references
         if (serverIpInputField == null)
@@ -164,7 +150,7 @@ public class WaitingLobbyManager : MonoBehaviour
     }
     private async void OnDestroy()
     {
-        if (_instance != this) return;
+        if (Instance != this) return;
 
         Debug.Log("[WaitingLobbyManager] OnDestroy — closing WebSocket connection");        
         SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -467,13 +453,13 @@ public class WaitingLobbyManager : MonoBehaviour
 
     public static async Task ExportParametersStaticAsync()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
             Debug.LogWarning("[WaitingLobbyManager] Cannot export parameters: instance is not available");
             return;
         }
 
-        await _instance.ExportParametersAsync();
+        await Instance.ExportParametersAsync();
     }
 
     private void ResetModeState(bool discardConfig)

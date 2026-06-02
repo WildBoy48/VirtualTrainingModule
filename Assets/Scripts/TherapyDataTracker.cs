@@ -117,14 +117,6 @@ public class TherapyDataTracker : MonoBehaviour
                 hasAttemptedGrab = false;
             }
         }
-
-        // Send information regarding the total time??
-        WaitingLobbyManager.totalScores = totalScores;
-        WaitingLobbyManager.totalDrops = totalDrops;
-        WaitingLobbyManager.totalMisses = totalMisses;
-        WaitingLobbyManager.totalRepetitions = totalRepetitions;
-        WaitingLobbyManager.totalAccuracy = totalAccuracy;
-        
     }
 
     //
@@ -167,16 +159,6 @@ public class TherapyDataTracker : MonoBehaviour
         CalculateAccuracy();
 
         Debug.Log($"<color=green>[DATA REP SUMMARY]</color> Time: {repTotalTime:F2}s | ReactionTime: {repReactionTime:F2}s | Reach: {repMaxHorizontalReach} | Space: {repSpaceExplored:F2}m | Ideal Space: {repIdealPathLength}m");
-
-
-        // Send information of the Rep Parameters
-        WaitingLobbyManager.repTotalTime = repTotalTime;
-        WaitingLobbyManager.repReactionTime = repReactionTime;
-        WaitingLobbyManager.repMovingTime = repMovingTime;
-        WaitingLobbyManager.repSpaceExplored = repSpaceExplored;
-        WaitingLobbyManager.repMaxHorizontalReach = repMaxHorizontalReach;
-        WaitingLobbyManager.repIdealPathLength = repIdealPathLength;
-
         isRepActive = false;
     }
     void RecordDrop(Hand hand, Grabbable grab)
