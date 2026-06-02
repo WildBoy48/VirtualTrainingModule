@@ -21,7 +21,6 @@ public class TherapyDataTracker : MonoBehaviour
     public float repMovingTime = 0f;
     public float repSpaceExplored = 0f;
     public float repMaxHorizontalReach = 0f;
-    public float repMaxFingerBend = 0f; // MIGHT NEED TO CHANGE 
     public float repIdealPathLength = 0f;
 
     public float repTightestGrip = 1.0f;
@@ -46,6 +45,8 @@ public class TherapyDataTracker : MonoBehaviour
         
 
     private const float MOVEMENT_THRESHOLD = 0.05f;
+    private const float STATS_TIMER = 0.2f;
+    private float timer;
 
     void Start()
     {
@@ -68,6 +69,9 @@ public class TherapyDataTracker : MonoBehaviour
 
     void Update()
     {
+        timer += Time.deltaTime;
+
+
         if (!isRepActive || autoHand == null) return;
 
         repTotalTime += Time.deltaTime;
@@ -117,11 +121,15 @@ public class TherapyDataTracker : MonoBehaviour
                 hasAttemptedGrab = false;
             }
         }
+
+        if(Time.deltaTime >= STATS_TIMER)
+        {
+            SendStats();
+            timer = 0f;
+        }
     }
 
-    //
-    //
-    //
+   
 
     public void StartNewRepetition(Vector3 cupSpawnPosition)
     {
@@ -134,7 +142,6 @@ public class TherapyDataTracker : MonoBehaviour
         repMovingTime = 0f;
         repSpaceExplored = 0f;
         repMaxHorizontalReach = 0f;
-        repMaxFingerBend = 0f; // MIGHT NEED TO CHANGE 
         repTightestGrip = 1.0f;
         repIdealPathLength = 0f;
 
@@ -157,6 +164,7 @@ public class TherapyDataTracker : MonoBehaviour
     {
         totalScores++;
         CalculateAccuracy();
+        SendStats();
 
         Debug.Log($"<color=green>[DATA REP SUMMARY]</color> Time: {repTotalTime:F2}s | ReactionTime: {repReactionTime:F2}s | Reach: {repMaxHorizontalReach} | Space: {repSpaceExplored:F2}m | Ideal Space: {repIdealPathLength}m");
         isRepActive = false;
@@ -189,6 +197,25 @@ public class TherapyDataTracker : MonoBehaviour
             autoHand.OnGrabJointBreak -= RecordDrop;
         }
     }
+
+    private void SendStats()
+    {
+        GameStatsReporter.Instance.ReportStatsFullGrab(
+        totalScores,
+        totalDrops,
+        totalMisses,
+        totalRepetitions,
+        totalAccuracy,
+
+        repTotalTime,
+        repReactionTime,
+        repMovingTime,
+        repSpaceExplored,
+        repMaxHorizontalReach,
+        repIdealPathLength
+            );
+    }
+
 
     private void OnDrawGizmos()
     {
