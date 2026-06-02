@@ -14,12 +14,15 @@ public class ObjectRespawn : MonoBehaviour
     private Rigidbody rb;
     private Grabbable grabbable;
 
+    public BoxCollider spawnArea;
+
     void Start()
     {
-        initialPosition = transform.position;
+        //initialPosition = transform.position;
         initialRotation = transform.rotation;
 
-        UpdateRespawnPoint(transform.position, transform.rotation);
+        initialPosition = GetRandomSafeSpawnPosition(spawnArea);
+        UpdateRespawnPoint(initialPosition, initialRotation);
         rb = GetComponent<Rigidbody>();
         grabbable = GetComponent<Grabbable>();
     }
@@ -45,5 +48,15 @@ public class ObjectRespawn : MonoBehaviour
     public void UpdateRespawnPoint(Vector3 position, Quaternion rotation) {
         respawnPosition = position;
         respawnRotation = rotation; 
+    }
+
+    public Vector3 GetRandomSafeSpawnPosition(BoxCollider collider)
+    {
+        Bounds bounds = collider.bounds;
+
+        float randomX = Random.Range(bounds.min.x, bounds.max.x);
+        float randomZ = Random.Range(bounds.min.z, bounds.max.z);
+
+        return new Vector3(randomX, transform.position.y ,randomZ);
     }
 }

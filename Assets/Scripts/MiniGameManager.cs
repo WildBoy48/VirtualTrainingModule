@@ -17,8 +17,17 @@ public class MiniGameManager : MonoBehaviour
     [SerializeField] private GameObject Chair;
     [SerializeField] private GameObject ScoreUI;
 
+    [SerializeField] private GameObject SpawnAreaSetup;
+    [SerializeField] private GameObject PlasticCup;
+
+
+
     private int selectedValue;
     private float seatHeightValue;
+
+    [Header("Developer Debug")]
+    [Tooltip("Check this in the Editor to force Setup Mode without loading the Lobby scene.")]
+    public bool forceSetupMode = false;
 
     void Awake()
     {
@@ -30,6 +39,8 @@ public class MiniGameManager : MonoBehaviour
         SessionParametersUI.SetActive(false);
         Chair.SetActive(true);
         ScoreUI.SetActive(false);
+        SpawnAreaSetup.SetActive(false);
+        PlasticCup.SetActive(false);
 
         Debug.Log("[MiniGameManager] Awake called. Background Detail: " + WaitingLobbyManager.BackgroundDetail);
         Debug.Log("[MiniGameManager] Awake called. Seat Height: " + WaitingLobbyManager.SeatHeight);
@@ -38,20 +49,30 @@ public class MiniGameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (WaitingLobbyManager.CurrentMode == "setup")
+        if (WaitingLobbyManager.CurrentMode == "setup" || forceSetupMode)
         {
             SessionParametersUI.SetActive(true);
             ScoreUI.SetActive(false);
+            PlasticCup.SetActive(false);
+
+            if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(true);
         }
         else if (WaitingLobbyManager.CurrentMode == "calibration")
         {
             SessionParametersUI.SetActive(false);
             ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
+            PlasticCup.SetActive(true);
+
+            if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(false);
+
         }
         else if (WaitingLobbyManager.CurrentMode == "session")
         {
             SessionParametersUI.SetActive(false);
             ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
+
+            if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(false);
+
         }
         else
         {

@@ -2,6 +2,7 @@ using UnityEngine;
 using Autohand;
 using Unity.Hierarchy;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class TherapyDataTracker : MonoBehaviour
 {
@@ -47,6 +48,15 @@ public class TherapyDataTracker : MonoBehaviour
     private const float MOVEMENT_THRESHOLD = 0.05f;
     private const float STATS_TIMER = 0.2f;
     private float timer;
+
+    // Session Data Memory
+    private List<float> allTotalTimes = new List<float>();
+    private List<float> allReactionTimes = new List<float>();
+    private List<float> allMovingTimes = new List<float>();
+    private List<float> allSpaceExplored = new List<float>();
+    private List<float> allMaxHorizontalReach = new List<float>();
+    private List<float> allIdealPathLength = new List<float>();
+
 
     void Start()
     {
@@ -122,7 +132,7 @@ public class TherapyDataTracker : MonoBehaviour
             }
         }
 
-        if(Time.deltaTime >= STATS_TIMER)
+        if(timer >= STATS_TIMER)
         {
             SendStats();
             timer = 0f;
@@ -167,6 +177,14 @@ public class TherapyDataTracker : MonoBehaviour
         SendStats();
 
         Debug.Log($"<color=green>[DATA REP SUMMARY]</color> Time: {repTotalTime:F2}s | ReactionTime: {repReactionTime:F2}s | Reach: {repMaxHorizontalReach} | Space: {repSpaceExplored:F2}m | Ideal Space: {repIdealPathLength}m");
+
+        allTotalTimes.Add(repTotalTime);
+        allReactionTimes.Add(repReactionTime);
+        allMovingTimes.Add(repMovingTime);
+        allSpaceExplored.Add(repSpaceExplored);
+        allMaxHorizontalReach.Add(repMaxHorizontalReach);
+        allIdealPathLength.Add(repIdealPathLength);
+
         isRepActive = false;
     }
     void RecordDrop(Hand hand, Grabbable grab)
@@ -234,5 +252,50 @@ public class TherapyDataTracker : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawLine(startPos3D, autoHand.transform.position);
         }
+    }
+
+    private float GetAverage(List<float> list)
+    {
+        if (list == null || list.Count == 0) return 0f;
+
+        float sum = 0f;
+        foreach ( float val in list )
+        {
+            sum += val;
+        }
+        return sum/list.Count;
+    }
+
+    private void ProcessSessionData()
+    {
+        if(totalScores == 0)
+        {
+            Debug.Log("<color=yellow>[SESSION DATA]</color> No repetitions Completed!");
+            return;
+        }
+
+        float averageTotalTime = GetAverage(allTotalTimes);
+        float averageReactionTime = GetAverage(allReactionTimes);
+        float averageMovingTime = GetAverage(allMovingTimes);
+        float averageSpaceExplored = GetAverage(allSpaceExplored);
+        float averageMaxHorizontal = GetAverage(allMaxHorizontalReach);
+        float averageIdealPath = GetAverage(allIdealPathLength);
+
+
+        Debug.Log("<b>=== SESSION RESULTS ===</b>");
+        Debug.Log($"Total Reps: {totalScores}");
+        Debug.Log($"Total Accuracy: {totalAccuracy}");
+        Debug.Log($"Average Total Time: {averageTotalTime}");
+        Debug.Log($"Average Reaction Time: {averageReactionTime}");
+        Debug.Log($"Average Moving Time: {averageMovingTime}");
+        Debug.Log($"Average Space Explored: {averageSpaceExplored}");
+        Debug.Log($"Average Horizontal Reach: {averageMaxHorizontal}");
+        Debug.Log($"Average Ideal Path Length : {averageIdealPath}");
+
+    }
+
+    private void OnApplicationQuit()
+    {
+        ProcessSessionData();
     }
 }
