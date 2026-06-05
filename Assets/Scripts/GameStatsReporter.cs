@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
-
+using System.Globalization;
 /// <summary>
 /// Attach this component to a persistent GameObject in your scene.
 /// It connects to the local relay server and sends live session stats
@@ -99,12 +99,23 @@ public class GameStatsReporter : MonoBehaviour
     public void ReportStatsFullGrab(int totalScore, int totalDrops, int totalMisses, int totalReps, float totalAccuracy, 
         float repTotalTime, float repReactionTime, float repMovingTime, float repSpaceExplored, float repMaxHorizontalReach, float repIdealPathLength)
     {
-        Debug.Log($"<color=blue>[DATA FULL GRAB]</color> Total Score: {totalScore} | Total Drops: {totalDrops} | Total Misses: {totalMisses} | Total Reps: {totalReps} | Total Accuracy: {totalAccuracy:F2}%");
-        Debug.Log($"<color=blue>[DATA REP DETAILS]</color> Rep Time: {repTotalTime:F2}s | Reaction Time: {repReactionTime:F2}s | Moving Time: {repMovingTime:F2}s | Space Explored: {repSpaceExplored:F2}m | Max Reach: {repMaxHorizontalReach}m | Ideal Path Length: {repIdealPathLength:F2}m");
+        Debug.Log($"<color=blue>[DATA FULL GRAB]</color> Total Score: {totalScore} | Total Drops: {totalDrops} | Total Misses: {totalMisses} | Total Reps: {totalReps} | Total Accuracy: {totalAccuracy}%");
+        Debug.Log($"<color=blue>[DATA REP DETAILS]</color> Rep Time: {repTotalTime}s | Reaction Time: {repReactionTime}s | Moving Time: {repMovingTime}s | Space Explored: {repSpaceExplored}m | Max Reach: {repMaxHorizontalReach}m | Ideal Path Length: {repIdealPathLength}m");
 
-        string json = $"{{\"type\":\"full_grab\",\"totalScore\":{totalScore},\"totalDrops\":{totalDrops},\"totalMisses\":{totalMisses},\"totalReps\":{totalReps},\"totalAccuracy\":{totalAccuracy:F2}," +
-                      $"\"repTotalTime\":{repTotalTime:F2},\"repReactionTime\":{repReactionTime:F2},\"repMovingTime\":{repMovingTime:F2}," +
-                      $"\"repSpaceExplored\":{repSpaceExplored:F2},\"repMaxHorizontalReach\":{repMaxHorizontalReach:F2},\"repIdealPathLength\":{repIdealPathLength:F2}}}";
+        string json =
+            $"{{\"type\":\"stats\"," +
+            $"\"totalScore\":{totalScore}," +
+            $"\"totalDrops\":{totalDrops}," +
+            $"\"totalMisses\":{totalMisses}," +
+            $"\"totalReps\":{totalReps}," +
+            $"\"totalAccuracy\":{totalAccuracy.ToString(CultureInfo.InvariantCulture)}," +
+            $"\"repTotalTime\":{repTotalTime.ToString(CultureInfo.InvariantCulture)}," +
+            $"\"repReactionTime\":{repReactionTime.ToString(CultureInfo.InvariantCulture)}," +
+            $"\"repMovingTime\":{repMovingTime.ToString(CultureInfo.InvariantCulture)}," +
+            $"\"repSpaceExplored\":{repSpaceExplored.ToString(CultureInfo.InvariantCulture)}," +
+            $"\"repMaxHorizontalReach\":{repMaxHorizontalReach.ToString(CultureInfo.InvariantCulture)}," +
+            $"\"repIdealPathLength\":{repIdealPathLength.ToString(CultureInfo.InvariantCulture)}}}";
+
         _ = SendAsync(json);
     }
     // ── Internal ───────────────────────────────────────────────────────────
@@ -121,10 +132,11 @@ public class GameStatsReporter : MonoBehaviour
             await _ws.ConnectAsync(new Uri(serverUrl), _cts.Token);
             Debug.Log("[GameStatsReporter] WebSocket open — sending identity.");
 
-            // Identify this connection as the Unity game
-            await SendAsync("{\"client\":\"unity\"}");
+            // Identify this connection as the stats reporter (NOT as "unity" to avoid conflicts with WaitingLobbyManager)
+            // The server will treat this as a viewer/stats connection, not the command recipient
+            await SendAsync("{\"client\":\"stats_reporter\"}");
             _connected = true;
-            Debug.Log("[GameStatsReporter] Connected to relay server and identified as Unity client.");
+            Debug.Log("[GameStatsReporter] Connected to relay server and identified as stats reporter.");
         }
         catch (Exception ex)
         {

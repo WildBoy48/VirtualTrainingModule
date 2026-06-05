@@ -34,7 +34,7 @@ public class WaitingLobbyManager : MonoBehaviour
     private ClientWebSocket _ws;
     private CancellationTokenSource _cts;
     private bool _isConnected = false;
-    public static string _currentServerIp;
+    public static string _currentServerIp { get; private set; }
     private float _lastConnectionCheckTime;
 
     // Status display colors
@@ -364,11 +364,17 @@ public class WaitingLobbyManager : MonoBehaviour
     {
         try
         {
+            // Attempt direct JSON parsing with validation
             var command = JsonUtility.FromJson<ServerCommand>(message);
-            if (command == null)
+            
+            // Validate that we have at least a type field
+            if (command == null || string.IsNullOrEmpty(command.type))
             {
+                Debug.LogWarning("[WaitingLobbyManager] Received invalid command (missing type): " + message);
                 return;
             }
+
+            Debug.Log("[WaitingLobbyManager] Processing command type: " + command.type);
 
             if (string.Equals(command.type, "load_scene", StringComparison.OrdinalIgnoreCase))
             {
@@ -396,13 +402,29 @@ public class WaitingLobbyManager : MonoBehaviour
             else if (string.Equals(command.type, "stop_mode", StringComparison.OrdinalIgnoreCase))
             {
                 Debug.Log("[WaitingLobbyManager] Received stop_mode command, returning to lobby.");
+                
+                // Ensure we're resetting state before loading scene
                 ResetModeState(true);
+                Debug.Log("[WaitingLobbyManager] Scene load scheduled - returning to lobby scene 0");
                 SceneManager.LoadScene(0);
+            }
+            else if (string.Equals(command.type, "end_session", StringComparison.OrdinalIgnoreCase))
+            {
+                Debug.Log("[WaitingLobbyManager] Received end_session command, returning to lobby.");
+                
+                // Ensure we're resetting state before loading scene
+                ResetModeState(true);
+                Debug.Log("[WaitingLobbyManager] Scene load scheduled - returning to lobby scene 0");
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                Debug.LogWarning("[WaitingLobbyManager] Unknown command type received: " + command.type);
             }
         }
         catch (Exception ex)
         {
-            Debug.LogWarning("[WaitingLobbyManager] Failed to parse server command: " + ex.Message);
+            Debug.LogError("[WaitingLobbyManager] Failed to parse server command: " + ex.Message + " | Raw message: " + message);
         }
     }
 

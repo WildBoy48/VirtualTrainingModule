@@ -5943,9 +5943,13 @@ MonoBehaviour:
   SeatHeightInputField: {fileID: 1073113577}
   Chair: {fileID: 811994228}
   ScoreUI: {fileID: 307726884}
+  dataTracker: {fileID: 1414804457}
+  gameStatsReporter: {fileID: 1414804459}
   SpawnAreaSetup: {fileID: 1126121550}
   PlasticCup: {fileID: 1657274287}
-  forceSetupMode: 1
+  CoffeeCup: {fileID: 1791244291}
+  KillZones: {fileID: 920047739}
+  forceSetupMode: 0
 --- !u!114 &1414804457
 MonoBehaviour:
   m_ObjectHideFlags: 0

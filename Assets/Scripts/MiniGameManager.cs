@@ -16,11 +16,12 @@ public class MiniGameManager : MonoBehaviour
     [SerializeField] private InputField SeatHeightInputField;
     [SerializeField] private GameObject Chair;
     [SerializeField] private GameObject ScoreUI;
-
+    [SerializeField] private TherapyDataTracker dataTracker;
+    [SerializeField] private GameStatsReporter gameStatsReporter;
     [SerializeField] private GameObject SpawnAreaSetup;
     [SerializeField] private GameObject PlasticCup;
-
-
+    [SerializeField] private GameObject CoffeeCup;
+    [SerializeField] private GameObject KillZones;
 
     private int selectedValue;
     private float seatHeightValue;
@@ -41,30 +42,68 @@ public class MiniGameManager : MonoBehaviour
         ScoreUI.SetActive(false);
         SpawnAreaSetup.SetActive(false);
         PlasticCup.SetActive(false);
+        CoffeeCup.SetActive(false);
+        KillZones.SetActive(false);
+        dataTracker.enabled = false;
+        gameStatsReporter.enabled = false;
 
-        Debug.Log("[MiniGameManager] Awake called. Background Detail: " + WaitingLobbyManager.BackgroundDetail);
-        Debug.Log("[MiniGameManager] Awake called. Seat Height: " + WaitingLobbyManager.SeatHeight);
+        // Add null checks for WaitingLobbyManager initialization
+        if (WaitingLobbyManager.Instance != null)
+        {
+            Debug.Log("[MiniGameManager] Awake called. Background Detail: " + WaitingLobbyManager.BackgroundDetail);
+            Debug.Log("[MiniGameManager] Awake called. Seat Height: " + WaitingLobbyManager.SeatHeight);
+        }
+        else
+        {
+            Debug.LogWarning("[MiniGameManager] Awake called but WaitingLobbyManager.Instance is null");
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Defensive: ensure WaitingLobbyManager is initialized before accessing static properties
+        if (WaitingLobbyManager.Instance == null)
+        {
+            Debug.LogError("[MiniGameManager] Start called but WaitingLobbyManager.Instance is null. Cannot access game parameters.");
+            SessionParametersUI.SetActive(false);
+            ScoreUI.SetActive(false);
+            dataTracker.enabled = false;
+            gameStatsReporter.enabled = false;
+            PlasticCup.SetActive(false);
+            CoffeeCup.SetActive(false);
+            KillZones.SetActive(false);
+            return;
+        }
+
         if (WaitingLobbyManager.CurrentMode == "setup" || forceSetupMode)
         {
             SessionParametersUI.SetActive(true);
             ScoreUI.SetActive(false);
             PlasticCup.SetActive(false);
-
+            KillZones.SetActive(false);
             if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(true);
+            dataTracker.enabled = false;
+            gameStatsReporter.enabled = false;
         }
         else if (WaitingLobbyManager.CurrentMode == "calibration")
         {
             SessionParametersUI.SetActive(false);
             ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
-            PlasticCup.SetActive(true);
-
+            
             if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(false);
 
+            dataTracker.enabled = false;
+            gameStatsReporter.enabled = false;
+
+            if (WaitingLobbyManager.CurrentMiniGameID == 1)
+            {
+                PlasticCup.SetActive(true);
+            } 
+            else if (WaitingLobbyManager.CurrentMiniGameID == 2) {
+                CoffeeCup.SetActive(true);
+            }
+            KillZones.SetActive(true);
         }
         else if (WaitingLobbyManager.CurrentMode == "session")
         {
@@ -73,14 +112,31 @@ public class MiniGameManager : MonoBehaviour
 
             if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(false);
 
+            dataTracker.enabled = true;
+            gameStatsReporter.enabled = true;
+            if (WaitingLobbyManager.CurrentMiniGameID == 1)
+            {
+                PlasticCup.SetActive(true);
+            }
+            else if (WaitingLobbyManager.CurrentMiniGameID == 2)
+            {
+                CoffeeCup.SetActive(true);
+            }
+            KillZones.SetActive(true);
         }
         else
         {
             SessionParametersUI.SetActive(false);
             ScoreUI.SetActive(false);
+            dataTracker.enabled = false;
+            gameStatsReporter.enabled = false;
+            PlasticCup.SetActive(false);
+            CoffeeCup.SetActive(false);
+            KillZones.SetActive(false);
         }
 
-        SessionParametersDropdown.value = WaitingLobbyManager.BackgroundDetail - 1;
+        // Apply slider and input field values
+        SessionParametersDropdown.value = Mathf.Max(0, WaitingLobbyManager.BackgroundDetail - 1); // Ensure valid dropdown index
         SeatHeightSlider.value = WaitingLobbyManager.SeatHeight;
         SeatHeightInputField.text = WaitingLobbyManager.SeatHeight.ToString("F2");
         GetBackgroundDetailValue();
