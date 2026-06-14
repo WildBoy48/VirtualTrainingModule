@@ -417,6 +417,18 @@ public class WaitingLobbyManager : MonoBehaviour
                 Debug.Log("[WaitingLobbyManager] Scene load scheduled - returning to lobby scene 0");
                 SceneManager.LoadScene(0);
             }
+            // Future commands
+            else if (string.Equals(command.type, "pause", StringComparison.OrdinalIgnoreCase))
+            {
+                Debug.Log("[WaitingLobbyManager] Received pause command.");
+                Time.timeScale = 0;
+            }
+            // Future commands
+            else if (string.Equals(command.type, "resume", StringComparison.OrdinalIgnoreCase))
+            {
+                Debug.Log("[WaitingLobbyManager] Received resume command.");
+                Time.timeScale = 1;
+            }
             else
             {
                 Debug.LogWarning("[WaitingLobbyManager] Unknown command type received: " + command.type);

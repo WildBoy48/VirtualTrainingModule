@@ -45,6 +45,8 @@ public class MiniGameManager : MonoBehaviour
         CoffeeCup.SetActive(false);
         KillZones.SetActive(false);
         dataTracker.enabled = false;
+
+        gameStatsReporter = FindObjectOfType<GameStatsReporter>();
         gameStatsReporter.enabled = false;
 
         // Add null checks for WaitingLobbyManager initialization
@@ -149,6 +151,11 @@ public class MiniGameManager : MonoBehaviour
         
     }
 
+    void OnDestroy()
+    {
+        gameStatsReporter.enabled = false;
+    }
+    
     public void GetBackgroundDetailValue()
     {
         selectedValue = SessionParametersDropdown.value;
