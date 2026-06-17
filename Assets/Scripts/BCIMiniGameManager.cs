@@ -68,8 +68,8 @@ public class BCIMiniGameManager : MonoBehaviour
             ScoreUI.SetActive(false);
             dataTracker.enabled = false;
             gameStatsReporter.enabled = false;
-            PlasticCup.SetActive(false);
-            PlasticCup1.SetActive(false);
+            PlasticCup.SetActive(true);
+            PlasticCup1.SetActive(true);
             return;
         }
 
@@ -77,8 +77,8 @@ public class BCIMiniGameManager : MonoBehaviour
         {
             SessionParametersUI.SetActive(true);
             ScoreUI.SetActive(false);
-            PlasticCup.SetActive(false);
-            PlasticCup1.SetActive(false);
+            PlasticCup.SetActive(true);
+            PlasticCup1.SetActive(true);
             dataTracker.enabled = false;
             gameStatsReporter.enabled = false;
         }
