@@ -1,0 +1,33 @@
+from pylsl import StreamInfo, StreamOutlet, cf_float32
+import time
+import math
+
+STREAM_NAME = "ConfidenceLevel"
+
+info = StreamInfo(
+    name=STREAM_NAME,
+    type="Signal",
+    channel_count=1,
+    nominal_srate=16,
+    channel_format=cf_float32,
+    source_id="fake_confidence_stream"
+)
+
+outlet = StreamOutlet(info)
+
+print(f"Sending fake LSL stream: {STREAM_NAME}")
+
+while True:
+    # Alternate every 3 seconds between right and left
+    t = time.time()
+    phase = int(t // 3) % 2
+
+    if phase == 0:
+        value = 0.8   # right
+    else:
+        value = -0.8  # left
+
+    outlet.push_sample([value])
+    print(value)
+
+    time.sleep(1 / 16)
