@@ -57,6 +57,18 @@ namespace LSL4Unity.Samples.SimpleInlet
         public int ExperimentStartCode = 32769;
         public int ExperimentStopCode = 32770;
 
+
+        [Header("Controlled Objects")]
+        [SerializeField] private GameObject Sphere;
+        [SerializeField] private float MoveDistance = 1.0f;
+
+        [Header("Test movement behaviour")]
+        [Tooltip("Object moved when relevant marker codes are received. If empty, this GameObject is moved.")]
+        public Transform TargetToMove;
+
+        [Tooltip("If true, movement uses the target object's local axes. If false, movement uses world axes.")]
+        public bool UseLocalMovement = false;
+
         [Header("State")]
         public BCITrialPhase CurrentPhase { get; private set; } = BCITrialPhase.None;
         public BCIDirection CurrentDirection { get; private set; } = BCIDirection.None;
@@ -68,23 +80,23 @@ namespace LSL4Unity.Samples.SimpleInlet
         public bool IsInTrial { get; private set; } = false;
         public bool IsFeedbackActive { get; private set; } = false;
 
-        [Header("Built-in Unity events")]
-        public UnityEvent OnExperimentStart;
-        public UnityEvent OnExperimentStop;
+        // [Header("Built-in Unity events")]
+        // public UnityEvent OnExperimentStart;
+        // public UnityEvent OnExperimentStop;
 
-        public UnityEvent OnTrialStart;
-        public UnityEvent OnCrossOnScreen;
-        public UnityEvent OnBeep;
+        // public UnityEvent OnTrialStart;
+        // public UnityEvent OnCrossOnScreen;
+        // public UnityEvent OnBeep;
 
-        public UnityEvent OnLeftCue;
-        public UnityEvent OnRightCue;
-        public UnityEvent OnAnyCue;
+        // public UnityEvent OnLeftCue;
+        // public UnityEvent OnRightCue;
+        // public UnityEvent OnAnyCue;
 
-        public UnityEvent OnFeedbackStart;
-        public UnityEvent OnTrialEnd;
+        // public UnityEvent OnFeedbackStart;
+        // public UnityEvent OnTrialEnd;
 
-        public UnityEvent OnSessionEnd;
-        public UnityEvent OnTrain;
+        // public UnityEvent OnSessionEnd;
+        // public UnityEvent OnTrain;
 
         [Header("Generic marker events")]
         public MarkerCodeEvent OnAnyMarkerCode;
@@ -158,7 +170,6 @@ namespace LSL4Unity.Samples.SimpleInlet
 
             for (int i = 0; i < MaxMarkersPerFrame; i++)
             {
-                // Non-blocking pull. Timestamp == 0 means no new sample.
                 double timestamp = markerInlet.pull_sample(markerSample, 0.0);
 
                 if (timestamp == 0.0)
@@ -211,54 +222,71 @@ namespace LSL4Unity.Samples.SimpleInlet
                 IsInTrial = false;
                 IsFeedbackActive = false;
 
-                OnExperimentStart?.Invoke();
+                // OnExperimentStart?.Invoke();
             }
             else if (markerCode == TrialStartCode)
             {
+                
                 CurrentPhase = BCITrialPhase.TrialStarted;
                 CurrentDirection = BCIDirection.None;
                 IsInTrial = true;
                 IsFeedbackActive = false;
 
-                OnTrialStart?.Invoke();
+                // OnTrialStart?.Invoke();
                 TrialStartReceived?.Invoke(timestamp);
+
+                if (Sphere != null)
+                    Sphere.transform.Translate(Vector3.up * MoveDistance, Space.World);
+                else
+                    Debug.LogWarning("Sphere object is not assigned in the Inspector.");
             }
             else if (markerCode == CrossOnScreenCode)
             {
                 CurrentPhase = BCITrialPhase.CrossOnScreen;
 
-                OnCrossOnScreen?.Invoke();
+                // OnCrossOnScreen?.Invoke();
             }
             else if (markerCode == BeepCode)
             {
                 CurrentPhase = BCITrialPhase.Beep;
 
-                OnBeep?.Invoke();
+                // OnBeep?.Invoke();
             }
             else if (markerCode == LeftCueCode)
             {
                 CurrentPhase = BCITrialPhase.CueShown;
                 CurrentDirection = BCIDirection.Left;
 
-                OnLeftCue?.Invoke();
-                OnAnyCue?.Invoke();
+                // OnLeftCue?.Invoke();
+                // OnAnyCue?.Invoke();
                 LeftCueReceived?.Invoke(timestamp);
+
+                if (Sphere != null)
+                    Sphere.transform.Translate(Vector3.left * MoveDistance, Space.World);
+                else
+                    Debug.LogWarning("Sphere object is not assigned in the Inspector.");
             }
             else if (markerCode == RightCueCode)
             {
+                
                 CurrentPhase = BCITrialPhase.CueShown;
                 CurrentDirection = BCIDirection.Right;
 
-                OnRightCue?.Invoke();
-                OnAnyCue?.Invoke();
+                // OnRightCue?.Invoke();
+                // OnAnyCue?.Invoke();
                 RightCueReceived?.Invoke(timestamp);
+
+                if (Sphere != null)
+                    Sphere.transform.Translate(Vector3.right * MoveDistance, Space.World);
+                else
+                    Debug.LogWarning("Sphere object is not assigned in the Inspector.");
             }
             else if (markerCode == FeedbackStartCode)
             {
                 CurrentPhase = BCITrialPhase.Feedback;
                 IsFeedbackActive = true;
 
-                OnFeedbackStart?.Invoke();
+                // OnFeedbackStart?.Invoke();
                 FeedbackStartReceived?.Invoke(timestamp);
             }
             else if (markerCode == TrialEndCode)
@@ -267,8 +295,13 @@ namespace LSL4Unity.Samples.SimpleInlet
                 IsInTrial = false;
                 IsFeedbackActive = false;
 
-                OnTrialEnd?.Invoke();
+                // OnTrialEnd?.Invoke();
                 TrialEndReceived?.Invoke(timestamp);
+
+                if (Sphere != null)
+                    Sphere.transform.Translate(Vector3.down * MoveDistance, Space.World);
+                else
+                    Debug.LogWarning("Sphere object is not assigned in the Inspector.");
             }
             else if (markerCode == SessionEndCode)
             {
@@ -277,13 +310,13 @@ namespace LSL4Unity.Samples.SimpleInlet
                 IsInTrial = false;
                 IsFeedbackActive = false;
 
-                OnSessionEnd?.Invoke();
+                // OnSessionEnd?.Invoke();
             }
             else if (markerCode == TrainCode)
             {
                 CurrentPhase = BCITrialPhase.Training;
 
-                OnTrain?.Invoke();
+                // OnTrain?.Invoke();
             }
             else if (markerCode == ExperimentStopCode)
             {
@@ -292,7 +325,7 @@ namespace LSL4Unity.Samples.SimpleInlet
                 IsInTrial = false;
                 IsFeedbackActive = false;
 
-                OnExperimentStop?.Invoke();
+                // OnExperimentStop?.Invoke();
             }
             else
             {
@@ -324,15 +357,12 @@ namespace LSL4Unity.Samples.SimpleInlet
 
             string text = rawMarker.Trim();
 
-            // Handles samples like "[770]"
             if (text.StartsWith("[") && text.EndsWith("]"))
                 text = text.Substring(1, text.Length - 2).Trim();
 
-            // Handles plain numeric markers like "770"
             if (int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out markerCode))
                 return true;
 
-            // Handles decimal-like markers like "770.0"
             if (double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out double markerAsDouble))
             {
                 double rounded = Math.Round(markerAsDouble);
@@ -344,7 +374,6 @@ namespace LSL4Unity.Samples.SimpleInlet
                 }
             }
 
-            // Handles debug/log strings like "13218793.07799307 [770]"
             MatchCollection matches = Regex.Matches(rawMarker, @"-?\d+");
 
             if (matches.Count > 0)
