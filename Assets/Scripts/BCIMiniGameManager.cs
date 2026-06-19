@@ -16,17 +16,16 @@ public class BCIMiniGameManager : MonoBehaviour
     [SerializeField] private InputField SeatHeightInputField;
     [SerializeField] private GameObject Chair;
     [SerializeField] private GameObject ScoreUI;
-    [SerializeField] private TherapyDataTracker dataTracker;
     [SerializeField] private GameStatsReporter gameStatsReporter;
-    [SerializeField] private GameObject PlasticCup;
-    [SerializeField] private GameObject PlasticCup1;
 
     private int selectedValue;
     private float seatHeightValue;
 
     [Header("Developer Debug")]
-    [Tooltip("Check this in the Editor to force Setup Mode without loading the Lobby scene.")]
+    [Tooltip("Check this in the Editor to simulate all Modes without loading the Lobby scene.")]
     public bool forceSetupMode = false;
+    public bool forceCalibrationMode = false;
+    public bool forceSessionMode = false;
 
     void Awake()
     {
@@ -38,9 +37,6 @@ public class BCIMiniGameManager : MonoBehaviour
         SessionParametersUI.SetActive(false);
         Chair.SetActive(true);
         ScoreUI.SetActive(false);
-        PlasticCup.SetActive(true);
-        PlasticCup1.SetActive(true);
-        dataTracker.enabled = false;
 
         gameStatsReporter = FindObjectOfType<GameStatsReporter>();
         gameStatsReporter.enabled = false;
@@ -61,69 +57,46 @@ public class BCIMiniGameManager : MonoBehaviour
     void Start()
     {
         // Defensive: ensure WaitingLobbyManager is initialized before accessing static properties
-        if (WaitingLobbyManager.Instance == null)
-        {
-            Debug.LogError("[MiniGameManager] Start called but WaitingLobbyManager.Instance is null. Cannot access game parameters.");
-            SessionParametersUI.SetActive(false);
-            ScoreUI.SetActive(false);
-            dataTracker.enabled = false;
-            gameStatsReporter.enabled = false;
-            PlasticCup.SetActive(true);
-            PlasticCup1.SetActive(true);
-            return;
-        }
+        // if (WaitingLobbyManager.Instance == null)
+        // {
+        //     Debug.LogError("[MiniGameManager] Start called but WaitingLobbyManager.Instance is null. Cannot access game parameters.");
+        //     SessionParametersUI.SetActive(false);
+        //     ScoreUI.SetActive(false);
+        //     gameStatsReporter.enabled = false;
+        //     return;
+        // }
 
         if (WaitingLobbyManager.CurrentMode == "setup" || forceSetupMode)
         {
             SessionParametersUI.SetActive(true);
             ScoreUI.SetActive(false);
-            PlasticCup.SetActive(true);
-            PlasticCup1.SetActive(true);
-            dataTracker.enabled = false;
             gameStatsReporter.enabled = false;
         }
-        else if (WaitingLobbyManager.CurrentMode == "calibration")
+        else if (WaitingLobbyManager.CurrentMode == "calibration" || forceCalibrationMode)
         {
             SessionParametersUI.SetActive(false);
-            ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
-
-            dataTracker.enabled = false;
-            gameStatsReporter.enabled = false;
-
-            if (WaitingLobbyManager.CurrentMiniGameID == 1)
-            {
-                PlasticCup.SetActive(true);
-            } 
-            else if (WaitingLobbyManager.CurrentMiniGameID == 2) {
-                PlasticCup1.SetActive(true);
+            if (forceCalibrationMode){
+                ScoreUI.SetActive(true);
+            } else {
+                ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
             }
-            PlasticCup1.SetActive(true);
+            gameStatsReporter.enabled = false;
         }
-        else if (WaitingLobbyManager.CurrentMode == "session")
+        else if (WaitingLobbyManager.CurrentMode == "session" || forceSessionMode)
         {
             SessionParametersUI.SetActive(false);
-            ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
-
-            dataTracker.enabled = true;
+            if (forceSessionMode){
+                ScoreUI.SetActive(true);
+            } else {
+                ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
+            }
             gameStatsReporter.enabled = true;
-            if (WaitingLobbyManager.CurrentMiniGameID == 1)
-            {
-                PlasticCup.SetActive(true);
-            }
-            else if (WaitingLobbyManager.CurrentMiniGameID == 2)
-            {
-                PlasticCup1.SetActive(true);
-            }
-            PlasticCup1.SetActive(true);
         }
         else
         {
             SessionParametersUI.SetActive(false);
             ScoreUI.SetActive(false);
-            dataTracker.enabled = false;
             gameStatsReporter.enabled = false;
-            PlasticCup.SetActive(false);
-            PlasticCup1.SetActive(false);
         }
 
         // Apply slider and input field values

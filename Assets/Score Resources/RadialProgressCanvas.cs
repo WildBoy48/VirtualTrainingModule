@@ -11,19 +11,18 @@ public class RadialProgressCanvas : MonoBehaviour
     void Start()
     {
         UpdateRing();
-        ScoreManager.Instance.OnScoreChanged += OnScoreChanged;
-        
+        ScoreManager.Instance.OnPercentageChanged += OnPercentageChanged;
     }
 
-    void OnScoreChanged (int score)
+    void OnPercentageChanged (float percentage)
     {
-        currentProgress = Mathf.Clamp01(score / 100f);
+        currentProgress = percentage;
         UpdateRing();
     }
 
     // Update is called once per frame
     void UpdateRing()
     {
-        progressRing.fillAmount = currentProgress;
+        progressRing.fillAmount = currentProgress / 100f;
     }
 }

@@ -3,32 +3,39 @@ using Autohand;
 
 public class AnimationController : MonoBehaviour
 {
-    private Animator animator;
-
-    [Header("Auto Hand")]
-    [SerializeField] private Hand hand;          // Assign the hand in Inspector
-    [SerializeField] private Grabbable cupGrab;  // Assign the cup's Grabbable component
-    [SerializeField] private GameObject cup;     // Assign the cup GameObject in Inspector
     [SerializeField] private GameObject handObject;
+    [SerializeField] private GameObject cupObject;
+    [SerializeField] private ScoreManager scoreManager;
+
+    private Animator handAnimator;
+    private Hand hand;
+    private Grabbable cupGrab;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        handAnimator = handObject.GetComponent<Animator>();
+        hand = handObject.GetComponent<Hand>();
+        cupGrab = cupObject.GetComponent<Grabbable>();
     }
 
      public void GrabCup()
     {
-        cup.transform.SetParent(handObject.transform);
-        cup.transform.localPosition = new Vector3(-0.035f, -0.0345f, 0.0255f);
-        cup.transform.localRotation = Quaternion.identity;
+        cupObject.transform.SetParent(handObject.transform);
+        cupObject.transform.localPosition = new Vector3(-0.035f, -0.0345f, 0.0255f);
+        cupObject.transform.localRotation = Quaternion.identity;
         hand.CloseHand();
         hand.CreateGrabConnection(cupGrab, true);
     }
 
     public void ReleaseCup()
     {
-        cup.transform.SetParent(null);
+        cupObject.transform.SetParent(null);
         hand.Release();
         hand.OpenHand();
+    }
+
+    public void AddScore(int amount)
+    {
+        scoreManager.AddScore(amount);
     }
 }

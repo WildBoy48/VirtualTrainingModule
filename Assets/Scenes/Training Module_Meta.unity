@@ -5943,7 +5943,7 @@ MonoBehaviour:
   Chair: {fileID: 811994228}
   ScoreUI: {fileID: 307726884}
   dataTracker: {fileID: 1414804457}
-  gameStatsReporter: {fileID: 0}
+  gameStatsReporter: {fileID: 1643554678}
   SpawnAreaSetup: {fileID: 1126121550}
   PlasticCup: {fileID: 1657274287}
   CoffeeCup: {fileID: 1791244291}

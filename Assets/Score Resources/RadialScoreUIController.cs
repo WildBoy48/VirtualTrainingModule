@@ -11,14 +11,14 @@ public class RadialScoreUIController : MonoBehaviour
 
         percentageLabel = uiDocument.Q<Label>("percentage-label");
         percentageLabel.text = $"0%";
-        ScoreManager.Instance.OnScoreChanged += UpdateScore;
+        ScoreManager.Instance.OnPercentageChanged += UpdatePercentage;
     }
 
-    public void UpdateScore(int newScore)
+    public void UpdatePercentage(float percentage)
     {
         if (percentageLabel != null)
         {
-            percentageLabel.text = $"{newScore}%";
+            percentageLabel.text = $"{percentage:F0}%";
         }
         
     }
