@@ -17,6 +17,7 @@ public class BCIMiniGameManager : MonoBehaviour
     [SerializeField] private GameObject Chair;
     [SerializeField] private GameObject ScoreUI;
     [SerializeField] private GameStatsReporter gameStatsReporter;
+    [SerializeField] private CustomInletTraining customInletTraining;
 
     private int selectedValue;
     private float seatHeightValue;
@@ -37,6 +38,7 @@ public class BCIMiniGameManager : MonoBehaviour
         SessionParametersUI.SetActive(false);
         Chair.SetActive(true);
         ScoreUI.SetActive(false);
+        customInletTraining.enabled = false;
 
         gameStatsReporter = FindObjectOfType<GameStatsReporter>();
         gameStatsReporter.enabled = false;
@@ -68,15 +70,17 @@ public class BCIMiniGameManager : MonoBehaviour
 
         if (WaitingLobbyManager.CurrentMode == "setup" || forceSetupMode)
         {
+            customInletTraining.enabled = false;
             SessionParametersUI.SetActive(true);
             ScoreUI.SetActive(false);
             gameStatsReporter.enabled = false;
         }
         else if (WaitingLobbyManager.CurrentMode == "calibration" || forceCalibrationMode)
         {
+            customInletTraining.enabled = true;
             SessionParametersUI.SetActive(false);
             if (forceCalibrationMode){
-                ScoreUI.SetActive(true);
+                ScoreUI.SetActive(false);
             } else {
                 ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
             }
@@ -84,6 +88,7 @@ public class BCIMiniGameManager : MonoBehaviour
         }
         else if (WaitingLobbyManager.CurrentMode == "session" || forceSessionMode)
         {
+            customInletTraining.enabled = false;
             SessionParametersUI.SetActive(false);
             if (forceSessionMode){
                 ScoreUI.SetActive(true);
@@ -94,6 +99,7 @@ public class BCIMiniGameManager : MonoBehaviour
         }
         else
         {
+            customInletTraining.enabled = false;
             SessionParametersUI.SetActive(false);
             ScoreUI.SetActive(false);
             gameStatsReporter.enabled = false;
