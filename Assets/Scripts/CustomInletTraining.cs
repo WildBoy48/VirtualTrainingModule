@@ -324,11 +324,11 @@ public class CustomInletTraining : MonoBehaviour
 
             if (isLeftSide)
             {
-                leftHandAnimator.speed = 1f;
+                leftHandAnimator.speed = 1.0f;
             }
             else
             {
-                rightHandAnimator.speed = 1f;
+                rightHandAnimator.speed = 1.0f;
             }
         }
         else if (markerCode == TrialEndCode)
