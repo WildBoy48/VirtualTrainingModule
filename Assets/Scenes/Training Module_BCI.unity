@@ -354,7 +354,7 @@ RectTransform:
   m_GameObject: {fileID: 27287891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2034486879}
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2676,7 +2676,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &307726885
 Transform:
   m_ObjectHideFlags: 0
@@ -3513,6 +3513,118 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 430865780}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &454640314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 454640317}
+  - component: {fileID: 454640316}
+  - component: {fileID: 454640318}
+  m_Layer: 0
+  m_Name: Online Session Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &454640316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454640314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a7f7d8a78fbcc641bc963af6394a837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BCIMiniGameManager
+  SessionParametersUI: {fileID: 738892660300831826}
+  SessionParametersDropdown: {fileID: 1544044798078555745}
+  Ceiling: {fileID: 3002459247729569302}
+  Level1: {fileID: 1549554791}
+  Level2: {fileID: 897477793}
+  Level3: {fileID: 2017642284}
+  Level4: {fileID: 305813169}
+  SeatHeightSlider: {fileID: 3003553414168330384}
+  SeatHeightInputField: {fileID: 1073113577}
+  Chair: {fileID: 811994228}
+  ScoreUI: {fileID: 307726884}
+  gameStatsReporter: {fileID: 1643554678}
+  customInletTraining: {fileID: 0}
+  forceSetupMode: 0
+  forceCalibrationMode: 0
+  forceSessionMode: 0
+--- !u!4 &454640317
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454640314}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5, y: 2.16494, z: 3.36585}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &454640318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454640314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ceecaddb99bcc4d814074f912f2ee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomInletOnline
+  MarkerStreamName: Labels
+  ConfidenceStreamName: ConfidenceLevel
+  TrialStartCode: 768
+  CrossOnScreenCode: 786
+  BeepCode: 33282
+  LeftCueCode: 769
+  RightCueCode: 770
+  FeedbackStartCode: 781
+  TrialEndCode: 800
+  SessionEndCode: 1010
+  ExperimentStartCode: 32769
+  ExperimentStopCode: 32770
+  PositiveConfidenceMeansRight: 1
+  ActivationConfidence: 0.3
+  MaxConfidenceSampleAgeSeconds: 0.75
+  MinAnimatorSpeed: 0.5
+  MaxAnimatorSpeed: 2
+  UseAnimatorRebindOnReset: 1
+  RestoreInitialTransformsOnReset: 1
+  TemporarilyActivateObjectsForReset: 1
+  ShowScoreBoard: 1
+  HideScoreBoardOnTrialEnd: 0
+  PointsPerCompletedCycle: 100
+  ResetScoreOnNewCue: 0
+  UseScoreManager: 1
+  ScoreText: {fileID: 0}
+  ScoreTextPrefix: 'Score: '
+  rightHand: {fileID: 4805486864488879459}
+  leftHand: {fileID: 798022406}
+  rightCup: {fileID: 1914486437}
+  leftCup: {fileID: 2091457224}
+  cross: {fileID: 2034486873}
+  scoreBoard: {fileID: 58406732}
+  RightAnimationStateName: Right Hand - Rest to Lift
+  LeftAnimationStateName: Left Hand - Rest to Lift
+  HideCueOnTrialEnd: 1
+  PrintDebugMessages: 1
+  IgnoreZeroMarkers: 1
+  MaxSamplesPerFrame: 64
 --- !u!1001 &457288602
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5927,7 +6039,7 @@ RectTransform:
   m_GameObject: {fileID: 840690298}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2034486879}
@@ -5995,7 +6107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9262,12 +9374,12 @@ GameObject:
   - component: {fileID: 1414804459}
   - component: {fileID: 1414804460}
   m_Layer: 0
-  m_Name: Session Controller
+  m_Name: Training Session Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1414804454
 Transform:
   m_ObjectHideFlags: 0
@@ -13708,7 +13820,7 @@ RectTransform:
   m_GameObject: {fileID: 2034486873}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 24.654}
-  m_LocalScale: {x: 0.002, y: 0.002, z: 0.002}
+  m_LocalScale: {x: 0.007, y: 0.007, z: 0.007}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 840690299}
@@ -171741,6 +171853,7 @@ SceneRoots:
   - {fileID: 1481266400}
   - {fileID: 1117894591}
   - {fileID: 1414804454}
+  - {fileID: 454640317}
   - {fileID: 6223958625357324920}
   - {fileID: 2063797682}
   - {fileID: 811994229}
