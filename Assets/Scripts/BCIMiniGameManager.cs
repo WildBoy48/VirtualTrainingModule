@@ -30,10 +30,14 @@ public class BCIMiniGameManager : MonoBehaviour
 
     void Awake()
     {
-        Level1.SetActive(true);
-        Level2.SetActive(false);
-        Level3.SetActive(false);
-        Level4.SetActive(false);
+        Level1.SetActive(false);
+        Level2.SetActive(true);
+        Level3.SetActive(true);
+        Level4.SetActive(true);
+        //Level1.SetActive(true);
+        //Level2.SetActive(false);
+        //Level3.SetActive(false);
+        //Level4.SetActive(false);
         Ceiling.SetActive(true);
         SessionParametersUI.SetActive(false);
         Chair.SetActive(true);

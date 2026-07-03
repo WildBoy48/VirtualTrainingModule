@@ -3,7 +3,6 @@ using System.Collections;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.UI;
 using LSL;
 
 public enum BCIOnlinePhase
@@ -77,13 +76,9 @@ public class CustomInletOnline : MonoBehaviour
 
     [Header("Scoring")]
     public int PointsPerCompletedCycle = 100;
+
+    [Tooltip("If true, ScoreManager is reset when a new left/right cue appears.")]
     public bool ResetScoreOnNewCue = false;
-
-    [Tooltip("If true, completed animation cycles also update ScoreManager / UI Toolkit scoreboard.")]
-    public bool UseScoreManager = true;
-
-    public Text ScoreText;
-    public string ScoreTextPrefix = "Score: ";
 
     [Header("Controlled objects")]
     [SerializeField] private GameObject rightHand;
@@ -110,7 +105,6 @@ public class CustomInletOnline : MonoBehaviour
     public float LatestSignedConfidence { get; private set; } = 0.0f;
     public float LatestAbsoluteConfidence { get; private set; } = 0.0f;
     public float LatestDirectionalConfidence { get; private set; } = 0.0f;
-    public int Score { get; private set; } = 0;
 
     private Animator rightHandAnimator;
     private Animator leftHandAnimator;
@@ -191,9 +185,6 @@ public class CustomInletOnline : MonoBehaviour
         SetActiveSafe(rightCup, false);
         SetActiveSafe(leftCup, false);
         SetActiveSafe(scoreBoard, true);
-        
-        
-        UpdateScoreText();
     }
 
     private void Start()
@@ -383,7 +374,7 @@ public class CustomInletOnline : MonoBehaviour
                       " | code = " + markerCode +
                       " | phase = " + CurrentPhase +
                       " | cue = " + CurrentDirection +
-                      " | score = " + Score +
+                      " | score = " + GetCurrentScoreForLog() +
                       " | timestamp = " + timestamp.ToString("F6", CultureInfo.InvariantCulture));
         }
     }
@@ -421,8 +412,7 @@ public class CustomInletOnline : MonoBehaviour
 
         if (ResetScoreOnNewCue)
         {
-            Score = 0;
-            UpdateScoreText();
+            ResetScoreManager();
         }
     }
 
@@ -525,9 +515,6 @@ public class CustomInletOnline : MonoBehaviour
             AddPoints(PointsPerCompletedCycle);
 
             ForceResetActiveSide();
-
-            if (PrintDebugMessages)
-                Debug.Log("[SCORE] +" + PointsPerCompletedCycle + " | total = " + Score);
         }
     }
 
@@ -668,31 +655,45 @@ public class CustomInletOnline : MonoBehaviour
 
     private void AddPoints(int amount)
     {
-        Score += amount;
-        UpdateScoreText();
-
-        if (UseScoreManager)
+        if (ScoreManager.Instance == null)
         {
-            if (ScoreManager.Instance != null)
-            {
-                ScoreManager.Instance.AddScore(amount);
-            }
-            else if (PrintDebugMessages)
-            {
-                Debug.LogWarning("[SCORE] UseScoreManager is true, but ScoreManager.Instance is null.");
-            }
+            Debug.LogWarning("[SCORE] Cannot add points because ScoreManager.Instance is null.");
+            return;
+        }
+
+        //ScoreManager.Instance.AddScore(amount);
+
+        if (PrintDebugMessages)
+        {
+            Debug.Log("[SCORE] +" + amount +
+                      " | total = " + ScoreManager.Instance.CurrentScore);
+        }
+    }
+
+    private void ResetScoreManager()
+    {
+        if (ScoreManager.Instance == null)
+        {
+            Debug.LogWarning("[SCORE] Cannot reset score because ScoreManager.Instance is null.");
+            return;
+        }
+
+        int currentScore = ScoreManager.Instance.CurrentScore;
+
+        if (currentScore != 0)
+        {
+            ScoreManager.Instance.AddScore(-currentScore);
         }
 
         if (PrintDebugMessages)
         {
-            Debug.Log("[SCORE] +" + amount + " | total = " + Score);
+            Debug.Log("[SCORE] Score reset.");
         }
     }
 
-    private void UpdateScoreText()
+    private int GetCurrentScoreForLog()
     {
-        if (ScoreText != null)
-            ScoreText.text = ScoreTextPrefix + Score.ToString(CultureInfo.InvariantCulture);
+        return ScoreManager.Instance != null ? ScoreManager.Instance.CurrentScore : 0;
     }
 
     private void SetActiveSafe(GameObject target, bool isActive)
