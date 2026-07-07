@@ -732,6 +732,20 @@ namespace Autohand {
                 finger.SetFingerBend(gripOffset);
         }
 
+        public void GrabPos(float grip) {
+            foreach(var finger in fingers){
+                if (finger.gameObject.name == "thumb_01") {
+                    finger.SetFingerBend(0.35f);
+                }
+                else if (finger.gameObject.name == "pinky_01") {
+                    finger.SetFingerBend(0.38f);
+                }
+                else {
+                    finger.SetFingerBend(grip);
+                }
+            }
+        }
+
         [ContextMenu("Set Pose - Open Hand")]
         public void OpenHand() {
             foreach(var finger in fingers)
