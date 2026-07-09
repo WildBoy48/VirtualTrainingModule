@@ -264,9 +264,11 @@ public class CustomInletTraining : MonoBehaviour
             cross.SetActive(true);
             rightCup.SetActive(false);
             leftCup.SetActive(false);
-            rightHandAnimator.Play("Right Hand - Rest to Lift", -1, 0f);
+            rightHandAnimator.Play("Right Hand - Rest to Lift", 0, 0f);
+            rightHandAnimator.Update(0f);
             rightHandAnimator.speed = 0f;
-            leftHandAnimator.Play("Left Hand - Rest to Lift", -1, 0f);
+            leftHandAnimator.Play("Left Hand - Rest to Lift", 0, 0f);
+            leftHandAnimator.Update(0f);
             leftHandAnimator.speed = 0f;
         }
         else if (markerCode == CrossOnScreenCode)
@@ -340,10 +342,12 @@ public class CustomInletTraining : MonoBehaviour
             // OnTrialEnd?.Invoke();
             TrialEndReceived?.Invoke(timestamp);
 
-            rightHandAnimator.Play("Right Hand - Rest to Lift", -1, 0f);
+            rightHandAnimator.Play("Right Hand - Rest to Lift", 0, 0f);
             rightHandAnimator.speed = 0f;
-            leftHandAnimator.Play("Left Hand - Rest to Lift", -1, 0f);
+            rightHandAnimator.Update(0f);
+            leftHandAnimator.Play("Left Hand - Rest to Lift", 0, 0f);
             leftHandAnimator.speed = 0f;
+            leftHandAnimator.Update(0f);
         }
         else if (markerCode == SessionEndCode)
         {

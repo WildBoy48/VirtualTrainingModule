@@ -185,6 +185,8 @@ public class CustomInletOnline : MonoBehaviour
         SetActiveSafe(rightCup, false);
         SetActiveSafe(leftCup, false);
         SetActiveSafe(scoreBoard, true);
+
+        scoreBoard.SetActive(ShowScoreBoard);
     }
 
     private void Start()
