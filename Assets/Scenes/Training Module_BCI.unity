@@ -2511,7 +2511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &274864817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4263,7 +4263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &454640316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4339,7 +4339,7 @@ MonoBehaviour:
   UseAnimatorRebindOnReset: 1
   RestoreInitialTransformsOnReset: 1
   TemporarilyActivateObjectsForReset: 1
-  ShowScoreBoard: 0
+  ShowScoreBoard: 1
   HideScoreBoardOnTrialEnd: 0
   PointsPerCompletedCycle: 100
   ResetScoreOnNewCue: 0
