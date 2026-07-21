@@ -4,61 +4,65 @@ using System.Runtime.CompilerServices;
 
 [RequireComponent(typeof(Grabbable))]
 public class HardwareProximityTrigger : MonoBehaviour
-{ 
-    [Header("Proximity Trigger Settings")]
-    [TooltipAttribute("Distance in meters to trigger the Arduino Open command)")]
-    public float proximityRadius = 0.2f;
+{
 
-    private SphereCollider proximityCollider;
-    private Grabbable grabbable;
-    private bool isOpenCommandSent = false;
+    [Header("Arduino Communication")]
+    [TooltipAttribute("Reference to the ArduinoCommunication script that handles serial communication.")]
+    public ArduinoCommunication arduinoCommunication;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Tooltip("The VR Hand or tracked object")]
+    public Transform playerHand;
+
+    [Header("Interaction Zones Settings")]
+    [TooltipAttribute("Distance in meters to trigger the Open state)")]
+    public float approachRadius = 0.2f;
+
+    [TooltipAttribute("Distance in meters to trigger the Close state)")]
+    public float touchRadius = 0.05f;
+
+    // State Tracking
+    private enum HandState
     {
-        grabbable = GetComponent<Grabbable>();
-
-        proximityCollider = gameObject.AddComponent<SphereCollider>();
-        proximityCollider.isTrigger = true;
-        proximityCollider.radius = proximityRadius;
+        None,
+        Approaching,
+        Touching
     }
 
-    void OnTriggerEnter(Collider other)
+    private HandState currentHandState = HandState.None;
+
+    private void Update()
     {
-        Hand hand = other.GetComponentInParent<Hand>();
+        if (playerHand == null || arduinoCommunication == null) return;
+            
+        float distanceToHand = Vector3.Distance(transform.position, playerHand.position);
 
-        if(hand != null && !isOpenCommandSent)
+        // Check the distance and update the hand state accordingly
+        if (distanceToHand <= touchRadius && currentHandState != HandState.Touching)
         {
-            // Send the Open command to the Arduino
-            //ArduinoController.Instance.SendOpenCommand();
-            Debug.Log("<color=green>HardwareProximityTrigger:</color> Open command sent to Arduino.");
-            isOpenCommandSent = true;
-
-            hand.OnHandCollisionStart += OnHandTouchedObject;
+            currentHandState = HandState.Touching;
+            arduinoCommunication.Grab();
+            Debug.Log("<color=green>State: TOUCH -> Hand Closed</color>");
+        }
+        else if (distanceToHand > touchRadius && distanceToHand <= approachRadius && currentHandState != HandState.Approaching)
+        {
+            currentHandState = HandState.Approaching;
+            arduinoCommunication.Release();
+            Debug.Log("<color=yellow>State: APPROACHING -> Hand Opened</color>");
+        }
+        else if (distanceToHand > approachRadius && currentHandState != HandState.None)
+        {
+            currentHandState = HandState.None;
+            arduinoCommunication.Grab();
+            Debug.Log("<color=grey>State: IDLE -> Hand Returned to Closed</color>");
         }
     }
-
-    void OnTriggerExit(Collider other)
+    void OnDrawGizmosSelected()
     {
-        Hand hand = other.GetComponentInParent<Hand>();
-        if(hand != null)
-        {
-            isOpenCommandSent = false;
-            hand.OnHandCollisionStart -= OnHandTouchedObject;
-        }
-    }
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, approachRadius);
 
-    void OnHandTouchedObject(Hand hand, GameObject touchedObject)
-    {
-        if(touchedObject == gameObject)
-        {
-            // Send the Close command to the Arduino
-            //ArduinoController.Instance.SendCloseCommand();
-            Debug.Log("<color=red>HardwareProximityTrigger:</color> Close command sent to Arduino.");
-
-            hand.OnHandCollisionStart -= OnHandTouchedObject;
-            hand.TryGrab(grabbable);
-        }
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, touchRadius);
     }
 }
 
