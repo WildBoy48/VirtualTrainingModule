@@ -2,23 +2,26 @@ using UnityEngine;
 using Autohand;
 using System.Runtime.CompilerServices;
 
+/// <summary>
+/// Monitors de distance between the player's hand and the object this script is attached to, and sends commands to the Arduino based on proximity.
+/// Sends Grab/Release commands to the Arduino.
+/// </summary>
 [RequireComponent(typeof(Grabbable))]
 public class HardwareProximityTrigger : MonoBehaviour
 {
-
     [Header("Arduino Communication")]
-    [TooltipAttribute("Reference to the ArduinoCommunication script that handles serial communication.")]
-    public ArduinoCommunication arduinoCommunication;
+    [Tooltip("Reference to the ArduinoCommunication script that handles serial communication.")]
+    [SerializeField] private ArduinoCommunication arduinoCommunication;
 
     [Tooltip("The VR Hand or tracked object")]
-    public Transform playerHand;
+    [SerializeField] private Transform playerHand;
 
     [Header("Interaction Zones Settings")]
-    [TooltipAttribute("Distance in meters to trigger the Open state)")]
-    public float approachRadius = 0.2f;
+    [Tooltip("Distance in meters to trigger the Open state)")]
+    [SerializeField] private float approachRadius = 0.2f;
 
-    [TooltipAttribute("Distance in meters to trigger the Close state)")]
-    public float touchRadius = 0.05f;
+    [Tooltip("Distance in meters to trigger the Close state)")]
+    [SerializeField] private float touchRadius = 0.05f;
 
     // State Tracking
     private enum HandState

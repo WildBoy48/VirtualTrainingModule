@@ -545,7 +545,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &42757416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1054,7 +1054,7 @@ GameObject:
   - component: {fileID: 195418673}
   - component: {fileID: 195418672}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: CupSide4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1390,7 +1390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &307726885
 Transform:
   m_ObjectHideFlags: 0
@@ -1874,7 +1874,7 @@ GameObject:
   - component: {fileID: 452377133}
   - component: {fileID: 452377132}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: CupSide7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2309,7 +2309,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -2328,6 +2328,7 @@ RectTransform:
   m_Children:
   - {fileID: 41129693}
   - {fileID: 891449827}
+  - {fileID: 1268513985}
   m_Father: {fileID: 307726885}
   m_LocalEulerAnglesHint: {x: 0, y: 75, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2362,7 +2363,7 @@ GameObject:
   - component: {fileID: 615319197}
   - component: {fileID: 615319196}
   m_Layer: 0
-  m_Name: Cube (7)
+  m_Name: CupSide3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2474,7 +2475,7 @@ GameObject:
   - component: {fileID: 626792782}
   - component: {fileID: 626792781}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: CupSide2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4171,7 +4172,9 @@ GameObject:
   - component: {fileID: 994507768}
   - component: {fileID: 994507767}
   - component: {fileID: 994507766}
-  - component: {fileID: 994507770}
+  - component: {fileID: 994507772}
+  - component: {fileID: 994507771}
+  - component: {fileID: 994507773}
   m_Layer: 0
   m_Name: Trigger Box
   m_TagString: Untagged
@@ -4198,8 +4201,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.99999964, y: 27.115715, z: 1}
+  m_Center: {x: 0, y: 9.942139, z: 0}
 --- !u!23 &994507767
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4272,7 +4275,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &994507770
+--- !u!114 &994507771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994507765}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 600316eeb20117b44bf1b24c34018543, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoldInZoneScore
+  triggerZone: {fileID: 994507769}
+  triggerZoneCollider: {fileID: 994507766}
+  targetObject: {fileID: 1657274298}
+  targetTag: Cup
+  requiredHoldTime: 3
+  scoreValue: 1
+  gameLoop: {fileID: 1414804458}
+  dataTracker: {fileID: 1414804457}
+--- !u!114 &994507772
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4281,15 +4304,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 994507765}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97b62d411411e1f4ba5b7c41c1da8de7, type: 3}
+  m_Script: {fileID: 11500000, guid: 439e9a511ff6ad045a3c7d74729ba98d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LeftRightDropScore
-  triggerZone: {fileID: 994507769}
+  m_EditorClassIdentifier: Assembly-CSharp::DropInZoneScore
+  triggerZoneCollider: {fileID: 994507766}
   targetObject: {fileID: 1657274298}
   targetTag: Cup
   score: 0
   gameLoop: {fileID: 1414804458}
   dataTracker: {fileID: 1414804457}
+--- !u!114 &994507773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994507765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16ff3f79a3af56240a6450224d01c05d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RawPhysicsDebug
 --- !u!4 &1013988333 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6066723042884397519, guid: 2ff043c4542b8c440a4d4ff89ddf4c65, type: 3}
@@ -4632,7 +4667,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1414804456}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MiniGameManager, Assembly-CSharp
         m_MethodName: GetInputSeatHeightValue
         m_Mode: 1
@@ -5047,7 +5082,7 @@ MonoBehaviour:
   laserPointer: {fileID: 1126121551}
   laserNormalColor: {r: 1, g: 0, b: 0, a: 1}
   laserGrabColor: {r: 0, g: 1, b: 0, a: 1}
-  isSetupModeActive: 1
+  isSetupModeActive: 0
   moveSpeed: 1
   minBoxSize: 0.2
   toggleSetupButton: {fileID: -8490603464652210768, guid: c348712bda248c246b8c49b3db54643f, type: 3}
@@ -5346,6 +5381,143 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1268513984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1268513985}
+  - component: {fileID: 1268513987}
+  - component: {fileID: 1268513986}
+  m_Layer: 5
+  m_Name: Task
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1268513985
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268513984}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -49.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 615191831}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 36, y: -128.2}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1268513986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268513984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Task: Pick up the Cup and place it in the blue zone'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: -227.88052, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1268513987
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268513984}
+  m_CullTransparentMesh: 1
 --- !u!1 &1296766578
 GameObject:
   m_ObjectHideFlags: 0
@@ -5940,9 +6112,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1414804454}
-  - component: {fileID: 1414804456}
   - component: {fileID: 1414804457}
   - component: {fileID: 1414804458}
+  - component: {fileID: 1414804459}
   m_Layer: 0
   m_Name: Session Controller
   m_TagString: Untagged
@@ -5965,36 +6137,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1414804456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1414804452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de657114a78dd074cb59fe3017693297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MiniGameManager
-  SessionParametersUI: {fileID: 738892660300831826}
-  SessionParametersDropdown: {fileID: 1544044798078555745}
-  Ceiling: {fileID: 3002459247729569302}
-  Level1: {fileID: 1549554791}
-  Level2: {fileID: 897477793}
-  Level3: {fileID: 2017642284}
-  Level4: {fileID: 305813169}
-  SeatHeightSlider: {fileID: 3003553414168330384}
-  SeatHeightInputField: {fileID: 1073113577}
-  Chair: {fileID: 811994228}
-  ScoreUI: {fileID: 307726884}
-  dataTracker: {fileID: 1414804457}
-  gameStatsReporter: {fileID: 0}
-  SpawnAreaSetup: {fileID: 1126121550}
-  PlasticCup: {fileID: 1657274287}
-  CoffeeCup: {fileID: 1791244291}
-  KillZones: {fileID: 920047739}
-  forceSetupMode: 0
 --- !u!114 &1414804457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6008,18 +6150,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TherapyDataTracker
   autoHand: {fileID: 1724621248}
-  totalScores: 0
-  totalDrops: 0
-  totalMisses: 0
-  totalRepetitions: 0
-  totalAccuracy: 0
-  repTotalTime: 0
-  repReactionTime: 0
-  repMovingTime: 0
-  repSpaceExplored: 0
-  repMaxHorizontalReach: 0
-  repIdealPathLength: 0
-  repTightestGrip: 1
+  fixedTargetBoundaries: {fileID: 994507769}
+  sendStats: 0
+  spatialTrackingInterval: 0.05
+  dataDirectory: C:\Universidade\5ano\Tese\Data
   attemptThreshold: 0.05
   resetThreshold: 0.2
 --- !u!114 &1414804458
@@ -6037,6 +6171,31 @@ MonoBehaviour:
   spawnArea: {fileID: 2131303937}
   animationDuration: 0.5
   dataTracker: {fileID: 1414804457}
+--- !u!114 &1414804459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414804452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37c5289c6e32d2c40b90ae78d2258d5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiniGameManagerSimpleExo
+  ceiling: {fileID: 3002459247729569302}
+  level1: {fileID: 1549554791}
+  level2: {fileID: 897477793}
+  level3: {fileID: 2017642284}
+  level4: {fileID: 305813169}
+  scoreUI: {fileID: 307726884}
+  dataTracker: {fileID: 1414804457}
+  spawnAreaSetup: {fileID: 1126121550}
+  plasticCup: {fileID: 1657274287}
+  coffeeCup: {fileID: 1791244291}
+  killZones: {fileID: 920047739}
+  selectedValue: 0
+  forceSetupMode: 0
 --- !u!1 &1454878026
 GameObject:
   m_ObjectHideFlags: 0
@@ -6195,7 +6354,7 @@ GameObject:
   - component: {fileID: 1486745920}
   - component: {fileID: 1486745919}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: CupSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7352,7 +7511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
       propertyPath: m_TagString
@@ -7525,12 +7684,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1657274287}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7e59b1e3e583ba42b29bb71cfb69811, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HardwareProximityTrigger
-  proximityRadius: 0.2
+  arduinoCommunication: {fileID: 42757416}
+  playerHand: {fileID: 1953442815}
+  approachRadius: 0.2
+  touchRadius: 0.05
 --- !u!4 &1657274298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
@@ -13256,7 +13418,7 @@ GameObject:
   - component: {fileID: 1777140674}
   - component: {fileID: 1777140673}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: CupSide6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14414,6 +14576,79 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1940818933}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1952736926
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.7599683
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1100556
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 24.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3756400870299172609, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
+      propertyPath: m_Name
+      value: Button
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
 --- !u!1001 &1953442813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19287,7 +19522,7 @@ GameObject:
   - component: {fileID: 2057592200}
   - component: {fileID: 2057592199}
   m_Layer: 0
-  m_Name: Cube (4)
+  m_Name: CupSide5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19446,7 +19681,7 @@ GameObject:
   - component: {fileID: 2102145043}
   - component: {fileID: 2102145042}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: CupSide1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36451,7 +36686,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1414804456}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MiniGameManager, Assembly-CSharp
         m_MethodName: SaveSessionParameters
         m_Mode: 1
@@ -38335,7 +38570,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1414804456}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MiniGameManager, Assembly-CSharp
         m_MethodName: GetBackgroundDetailValue
         m_Mode: 1
@@ -57251,7 +57486,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1414804456}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MiniGameManager, Assembly-CSharp
         m_MethodName: GetSeatHeightValue
         m_Mode: 1
@@ -171708,3 +171943,4 @@ SceneRoots:
   - {fileID: 656248631}
   - {fileID: 1643554679}
   - {fileID: 42757417}
+  - {fileID: 1952736926}
