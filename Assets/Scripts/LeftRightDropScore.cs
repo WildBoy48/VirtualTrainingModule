@@ -32,6 +32,8 @@ public class LeftRightDropScore : MonoBehaviour
     private float cooldownDuration = 1.5f;
     private int collidersInZoneCount = 0;
 
+    private int totalScore = 0;
+
     // Tracker Script
     public TherapyDataTracker dataTracker;
 
@@ -96,11 +98,11 @@ public class LeftRightDropScore : MonoBehaviour
                 isScoreLocked = true;
                 scoreCooldown = cooldownDuration;
 
-                score += 1;
+                totalScore += score;
                 if (dataTracker != null) dataTracker.RecordScore();
-                ScoreManager.Instance.AddScore(1);
+                ScoreManager.Instance.AddScore(score);
                 hasScoredThisDrop = true;
-                Debug.Log($"<color=green>[LeftRightDropScore]</color> Score awarded! Object dropped in zone. Current score = {score}.");
+                Debug.Log($"<color=green>[LeftRightDropScore]</color> Score awarded! Object dropped in zone. Current score = {totalScore}.");
             
                 if(gameLoop != null)
                 {

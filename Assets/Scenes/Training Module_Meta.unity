@@ -1309,7 +1309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &305813170
 Transform:
   m_ObjectHideFlags: 0
@@ -1344,7 +1344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &307726885
 Transform:
   m_ObjectHideFlags: 0
@@ -1374,6 +1374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec5ee3d4d9950a4d8a0d68768a811ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
+  TargetScore: 1000
 --- !u!1 &348697954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,6 +1543,7 @@ GameObject:
   - component: {fileID: 384364844}
   - component: {fileID: 384364843}
   - component: {fileID: 384364842}
+  - component: {fileID: 384364845}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -1558,7 +1560,7 @@ Transform:
   m_GameObject: {fileID: 384364840}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.814, z: -0.412}
+  m_LocalPosition: {x: 0, y: -0.8, z: -0.412}
   m_LocalScale: {x: 0.08468319, y: 0.08468319, z: 0.08468319}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1581,7 +1583,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -1643,6 +1645,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 384364840}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &384364845
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384364840}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 0.5, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &394436485
 GameObject:
   m_ObjectHideFlags: 0
@@ -3783,7 +3806,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &897477794
 Transform:
   m_ObjectHideFlags: 0
@@ -4241,7 +4264,7 @@ MonoBehaviour:
   triggerZone: {fileID: 994507769}
   targetObject: {fileID: 1657274298}
   targetTag: Cup
-  score: 0
+  score: 100
   gameLoop: {fileID: 1414804458}
   dataTracker: {fileID: 1414804457}
 --- !u!4 &1013988333 stripped
@@ -4871,7 +4894,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!120 &1126121551
 LineRenderer:
   serializedVersion: 3
@@ -5949,6 +5972,7 @@ MonoBehaviour:
   CoffeeCup: {fileID: 1791244291}
   KillZones: {fileID: 920047739}
   forceSetupMode: 0
+  offlineMode: 1
 --- !u!114 &1414804457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6566,7 +6590,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1549554792
 Transform:
   m_ObjectHideFlags: 0
@@ -7306,7 +7330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
       propertyPath: m_TagString
@@ -19207,7 +19231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2017642285
 Transform:
   m_ObjectHideFlags: 0

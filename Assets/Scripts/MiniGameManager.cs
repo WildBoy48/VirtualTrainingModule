@@ -29,25 +29,31 @@ public class MiniGameManager : MonoBehaviour
     [Header("Developer Debug")]
     [Tooltip("Check this in the Editor to force Setup Mode without loading the Lobby scene.")]
     public bool forceSetupMode = false;
+    public bool offlineMode = false;
 
     void Awake()
     {
-        Level1.SetActive(true);
-        Level2.SetActive(false);
-        Level3.SetActive(false);
-        Level4.SetActive(false);
-        Ceiling.SetActive(true);
-        SessionParametersUI.SetActive(false);
-        Chair.SetActive(true);
-        ScoreUI.SetActive(false);
-        SpawnAreaSetup.SetActive(false);
-        PlasticCup.SetActive(false);
-        CoffeeCup.SetActive(false);
-        KillZones.SetActive(false);
-        dataTracker.enabled = false;
+        if (offlineMode)
+        {
+            Debug.LogWarning("[MiniGameManager] Offline mode is enabled. WaitingLobbyManager.Instance will not be used.");
+            Ceiling.SetActive(true);
+        } else {
+            Level1.SetActive(true);
+            Level2.SetActive(false);
+            Level3.SetActive(false);
+            Level4.SetActive(false);
+            SessionParametersUI.SetActive(false);
+            Chair.SetActive(true);
+            ScoreUI.SetActive(false);
+            SpawnAreaSetup.SetActive(false);
+            PlasticCup.SetActive(false);
+            CoffeeCup.SetActive(false);
+            KillZones.SetActive(false);
+            dataTracker.enabled = false;
+            gameStatsReporter = FindObjectOfType<GameStatsReporter>();
+            gameStatsReporter.enabled = false;
+        }
 
-        gameStatsReporter = FindObjectOfType<GameStatsReporter>();
-        gameStatsReporter.enabled = false;
 
         // Add null checks for WaitingLobbyManager initialization
         if (WaitingLobbyManager.Instance != null)
@@ -64,85 +70,93 @@ public class MiniGameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Defensive: ensure WaitingLobbyManager is initialized before accessing static properties
-        if (WaitingLobbyManager.Instance == null)
+        if (offlineMode)
         {
-            Debug.LogError("[MiniGameManager] Start called but WaitingLobbyManager.Instance is null. Cannot access game parameters.");
-            SessionParametersUI.SetActive(false);
-            ScoreUI.SetActive(false);
-            dataTracker.enabled = false;
-            gameStatsReporter.enabled = false;
-            PlasticCup.SetActive(false);
-            CoffeeCup.SetActive(false);
-            KillZones.SetActive(false);
+            Debug.LogWarning("[MiniGameManager] Offline mode is enabled. Skipping WaitingLobbyManager checks.");
             return;
-        }
-
-        if (WaitingLobbyManager.CurrentMode == "setup" || forceSetupMode)
+        } 
+        else 
         {
-            SessionParametersUI.SetActive(true);
-            ScoreUI.SetActive(false);
-            PlasticCup.SetActive(false);
-            KillZones.SetActive(false);
-            if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(true);
-            dataTracker.enabled = false;
-            gameStatsReporter.enabled = false;
-        }
-        else if (WaitingLobbyManager.CurrentMode == "calibration")
-        {
-            SessionParametersUI.SetActive(false);
-            ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
-            
-            if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(false);
-
-            dataTracker.enabled = false;
-            gameStatsReporter.enabled = false;
-
-            if (WaitingLobbyManager.CurrentMiniGameID == 1)
+            // Defensive: ensure WaitingLobbyManager is initialized before accessing static properties
+            if (WaitingLobbyManager.Instance == null)
             {
-                PlasticCup.SetActive(true);
-            } 
-            else if (WaitingLobbyManager.CurrentMiniGameID == 2) {
-                CoffeeCup.SetActive(true);
+                Debug.LogError("[MiniGameManager] Start called but WaitingLobbyManager.Instance is null. Cannot access game parameters.");
+                SessionParametersUI.SetActive(false);
+                ScoreUI.SetActive(false);
+                dataTracker.enabled = false;
+                gameStatsReporter.enabled = false;
+                PlasticCup.SetActive(false);
+                CoffeeCup.SetActive(false);
+                KillZones.SetActive(false);
+                return;
             }
-            KillZones.SetActive(true);
-        }
-        else if (WaitingLobbyManager.CurrentMode == "session")
-        {
-            SessionParametersUI.SetActive(false);
-            ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
 
-            if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(false);
-
-            dataTracker.enabled = true;
-            gameStatsReporter.enabled = true;
-            if (WaitingLobbyManager.CurrentMiniGameID == 1)
+            if (WaitingLobbyManager.CurrentMode == "setup" || forceSetupMode)
             {
-                PlasticCup.SetActive(true);
+                SessionParametersUI.SetActive(true);
+                ScoreUI.SetActive(false);
+                PlasticCup.SetActive(false);
+                KillZones.SetActive(false);
+                if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(true);
+                dataTracker.enabled = false;
+                gameStatsReporter.enabled = false;
             }
-            else if (WaitingLobbyManager.CurrentMiniGameID == 2)
+            else if (WaitingLobbyManager.CurrentMode == "calibration")
             {
-                CoffeeCup.SetActive(true);
-            }
-            KillZones.SetActive(true);
-        }
-        else
-        {
-            SessionParametersUI.SetActive(false);
-            ScoreUI.SetActive(false);
-            dataTracker.enabled = false;
-            gameStatsReporter.enabled = false;
-            PlasticCup.SetActive(false);
-            CoffeeCup.SetActive(false);
-            KillZones.SetActive(false);
-        }
+                SessionParametersUI.SetActive(false);
+                ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
+                
+                if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(false);
 
-        // Apply slider and input field values
-        SessionParametersDropdown.value = Mathf.Max(0, WaitingLobbyManager.BackgroundDetail - 1); // Ensure valid dropdown index
-        SeatHeightSlider.value = WaitingLobbyManager.SeatHeight;
-        SeatHeightInputField.text = WaitingLobbyManager.SeatHeight.ToString("F2");
-        GetBackgroundDetailValue();
-        GetSeatHeightValue();
+                dataTracker.enabled = false;
+                gameStatsReporter.enabled = false;
+
+                if (WaitingLobbyManager.CurrentMiniGameID == 1)
+                {
+                    PlasticCup.SetActive(true);
+                } 
+                else if (WaitingLobbyManager.CurrentMiniGameID == 2) {
+                    CoffeeCup.SetActive(true);
+                }
+                KillZones.SetActive(true);
+            }
+            else if (WaitingLobbyManager.CurrentMode == "session")
+            {
+                SessionParametersUI.SetActive(false);
+                ScoreUI.SetActive(WaitingLobbyManager.VisualCues);
+
+                if (SpawnAreaSetup != null) SpawnAreaSetup.SetActive(false);
+
+                dataTracker.enabled = true;
+                gameStatsReporter.enabled = true;
+                if (WaitingLobbyManager.CurrentMiniGameID == 1)
+                {
+                    PlasticCup.SetActive(true);
+                }
+                else if (WaitingLobbyManager.CurrentMiniGameID == 2)
+                {
+                    CoffeeCup.SetActive(true);
+                }
+                KillZones.SetActive(true);
+            }
+            else
+            {
+                SessionParametersUI.SetActive(false);
+                ScoreUI.SetActive(false);
+                dataTracker.enabled = false;
+                gameStatsReporter.enabled = false;
+                PlasticCup.SetActive(false);
+                CoffeeCup.SetActive(false);
+                KillZones.SetActive(false);
+            }
+
+            // Apply slider and input field values
+            SessionParametersDropdown.value = Mathf.Max(0, WaitingLobbyManager.BackgroundDetail - 1); // Ensure valid dropdown index
+            SeatHeightSlider.value = WaitingLobbyManager.SeatHeight;
+            SeatHeightInputField.text = WaitingLobbyManager.SeatHeight.ToString("F2");
+            GetBackgroundDetailValue();
+            GetSeatHeightValue();
+        }
     }
 
     // Update is called once per frame
