@@ -30,6 +30,10 @@ public class TherapyDataTracker : MonoBehaviour
     [Tooltip("Distance from tip to palm to reset the attempt")]
     [SerializeField] private float resetThreshold = 0.12f;
 
+    [Header("Arduino Communication")]
+    [Tooltip("Reference to the ArduinoCommunication component for syncing telemetry")]
+    [SerializeField] private ArduinoCommunication arduinoCommunication;
+
     // Session Analytics Variables
     private int totalScores = 0;  
     private int totalDrops = 0;
@@ -80,6 +84,10 @@ public class TherapyDataTracker : MonoBehaviour
     private SessionData currentSessionData;
     private List<TrajectoryPoint> currentTrajectory;
 
+    // Public Session ID
+    public string CurrentSessionID { get; private set; }
+    
+
 #if UNITY_EDITOR
     private void OnValidate()
     {
@@ -93,30 +101,11 @@ public class TherapyDataTracker : MonoBehaviour
 
     private void Start()
     {
-        // Initialize Session Data
-        currentSessionData = new SessionData
-        {
-            session_id = "Session_" + DateTime.Now.ToString("yyyyMMdd_HHmm"),
-            timestamp = DateTime.UtcNow.ToString("O"),
-            repetitions = new List<RepetitionData>()
-
-        };
-        currentTrajectory = new List<TrajectoryPoint>();
-
         if (autoHand != null)
         {
             handRb = autoHand.GetComponent<Rigidbody>();
             autoHand.OnGrabJointBreak += RecordDrop;
-        }
-
-        GameObject startingCup = GameObject.FindWithTag("Cup");
-        if (startingCup != null)
-        {
-            initialCupY = startingCup.transform.position.y;
-
-            StartNewRepetition(startingCup.transform.position);
-        }
-        
+        }             
     }
 
     private void Update()
@@ -201,7 +190,36 @@ public class TherapyDataTracker : MonoBehaviour
         }
     }
 
-   
+    ///<summary>
+    /// Called from MiniGameManagerSimpleExo when the game starts, to reset all session variables and start a new session.
+    /// </summary>
+    public void StartSession()
+    {
+        CurrentSessionID = "Session_" + DateTime.Now.ToString("yyyyMMdd_HHmm");
+
+        // Initialize Session Data
+        currentSessionData = new SessionData
+        {
+            session_id = CurrentSessionID,
+            timestamp = DateTime.UtcNow.ToString("O"),
+            repetitions = new List<RepetitionData>()
+
+        };
+        currentTrajectory = new List<TrajectoryPoint>();
+        GameObject startingCup = GameObject.FindWithTag("Cup");
+        if (startingCup != null)
+        {
+            initialCupY = startingCup.transform.position.y;
+
+            StartNewRepetition(startingCup.transform.position);
+        }
+
+        if(arduinoCommunication != null) arduinoCommunication.SetupDataLogger(CurrentSessionID, dataDirectory);
+
+        Debug.Log("<color=cyan>[TherapyDataTracker]</color> Session officially started via button press.");
+
+    }
+
     /// <summary>
     /// Resets variables for a new attempt.
     /// Triggered by GameLoop after the repetition is a success, when it teleports to the new location.
@@ -335,7 +353,12 @@ public class TherapyDataTracker : MonoBehaviour
     /// Serializes all recorded session and repetition data into a JSON file for local storage.
     /// </summary>
     private void OnApplicationQuit()
-    { 
+    {
+        if (currentSessionData == null)
+        {
+            Debug.Log("<color=cyan>[TherapyDataTracker]</color> Game closed before session started. No data saved.");
+            return;
+        }
 
         // Save the session data to a JSON file
         currentSessionData.session_metrics = new SessionMetrics

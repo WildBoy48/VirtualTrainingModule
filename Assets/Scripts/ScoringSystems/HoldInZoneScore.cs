@@ -1,5 +1,6 @@
 using Autohand;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Evaluates if a patient successfully holds an object within a specific spatial zone 
@@ -37,6 +38,9 @@ public class HoldInZoneScore : MonoBehaviour
 
     [Tooltip("Reference to the TherapyDataTracker script that records therapy-related data.")]
     [SerializeField] private TherapyDataTracker dataTracker;
+
+    [Header("Feedback")]
+    public UnityEvent OnScoreSuccess;
 
     // Tracking variables
     private Grabbable targetGrabbable;
@@ -104,6 +108,8 @@ public class HoldInZoneScore : MonoBehaviour
         }
 
         Debug.Log($"<color=green>[HoldInZoneScore]</color> Success! Object held for {requiredHoldTime} seconds.");
+
+        OnScoreSuccess?.Invoke();
 
         currentHoldTime = 0f;
 

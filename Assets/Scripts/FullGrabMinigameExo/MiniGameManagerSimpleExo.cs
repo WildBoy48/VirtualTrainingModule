@@ -32,6 +32,10 @@ public class MiniGameManagerSimpleExo : MonoBehaviour
     [Tooltip("Check this in the Editor to force Setup Mode without loading the Lobby scene.")]
     [SerializeField] private bool forceSetupMode = false;
 
+    [Header("Game Flow")]
+    [SerializeField] private GameObject startUIBoard;
+    [SerializeField] private GameObject startButton;
+
     private void Start()
     {
         InitalizeGameState();
@@ -44,14 +48,34 @@ public class MiniGameManagerSimpleExo : MonoBehaviour
     private void InitalizeGameState()
     {
         if(ceiling != null) ceiling.SetActive(true);
-        if(scoreUI != null) scoreUI.SetActive(true);
+        if(scoreUI != null) scoreUI.SetActive(false);
         if(spawnAreaSetup != null) spawnAreaSetup.SetActive(false);
 
-        if(dataTracker != null) dataTracker.enabled = true;
+        if(dataTracker != null) dataTracker.enabled = false;
 
-        if (plasticCup != null) plasticCup.SetActive(true);
+        if (plasticCup != null) plasticCup.SetActive(false);
         if(coffeeCup != null) coffeeCup.SetActive(false);
         if(killZones != null) killZones.SetActive(true);
+
+        if (startUIBoard != null) startUIBoard.SetActive(true);
+        if (startButton != null) startButton.SetActive(true);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void StartGame()
+    {
+        if(startUIBoard != null) startUIBoard.SetActive(false);
+        if(startButton != null) startButton.SetActive(false);
+
+        if(scoreUI != null) scoreUI.SetActive(true);
+
+        if(plasticCup != null) plasticCup.SetActive(true);
+        if(dataTracker != null) dataTracker.enabled = true;
+
+        Debug.Log("<color=magenta>[Game Start]</color> Patient pressed Begin. Game started!");
+        dataTracker.StartSession();
     }
 
     /// <summary>

@@ -5,13 +5,28 @@ public class RadialScoreUIController : MonoBehaviour
 {
     private Label percentageLabel;
 
-    void Start()
+    void OnEnable()
     {
-        var uiDocument = GetComponent<UIDocument>().rootVisualElement;
+        var uiDocument = GetComponent<UIDocument>();
 
-        percentageLabel = uiDocument.Q<Label>("percentage-label");
-        percentageLabel.text = $"0%";
-        ScoreManager.Instance.OnScoreChanged += UpdateScore;
+        if(uiDocument != null && uiDocument.rootVisualElement != null)
+        {
+            percentageLabel = uiDocument.rootVisualElement.Q<Label>("percentage-label");
+            if (percentageLabel != null)
+            {
+                percentageLabel.text = $"0%";
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[RadialScoreUIController] UIDocument or its rootVisualElement is null.");
+        }
+        
+        if(ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.OnScoreChanged += UpdateScore;
+
+        }
     }
 
     public void UpdateScore(int newScore)
@@ -21,5 +36,13 @@ public class RadialScoreUIController : MonoBehaviour
             percentageLabel.text = $"{newScore}%";
         }
         
+    }
+
+    private void OnDisable()
+    {
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.OnScoreChanged -= UpdateScore;
+        }
     }
 }

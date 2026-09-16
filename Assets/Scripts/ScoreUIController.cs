@@ -9,18 +9,13 @@ public class ScoreUIController : MonoBehaviour
 {
     private Label scoreLabel;
 
-    void Start()
+    void OnEnable()
     {
-        var uiDocument = GetComponent<UIDocument>().rootVisualElement;
-        
-        scoreLabel = uiDocument.Q<Label>("score-label");
-        if (scoreLabel != null)
+        var uiDocument = GetComponent<UIDocument>();
+        if (uiDocument != null && uiDocument.rootVisualElement != null)
         {
-            scoreLabel.text = $"Score: 0";
-        }
-        else
-        {
-            Debug.LogWarning("[ScoreUIController] Could not find 'score-label' in the UIDocument.");
+            scoreLabel = uiDocument.rootVisualElement.Q<Label>("score-label");
+            if (scoreLabel != null) scoreLabel.text = "Score: 0";
         }
 
         if (ScoreManager.Instance != null)
@@ -41,7 +36,7 @@ public class ScoreUIController : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         // Unsubscribe from the score change event to prevent memory leaks
         if (ScoreManager.Instance != null)

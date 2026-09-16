@@ -4,6 +4,8 @@ using System.Threading;
 using System.Collections;
 using UnityEngine.XR.Interaction.Toolkit.Samples.Hands;
 using System.Collections.Concurrent;
+using UnityEditor;
+using System.IO;
 
 /// <summary>
 /// Manages a background thread for safe, non-blocking serial communication with the Arduino.
@@ -26,6 +28,10 @@ public class ArduinoCommunication : MonoBehaviour
     // Thread-safe queue for commands to be sent to the Arduino
     private ConcurrentQueue<string> commandQueue = new ConcurrentQueue<string>();
 
+    // Data logging
+    private StreamWriter csvWriter;
+    private string logFilePath;
+
     private void Start()
     {
         StartCoroutine(InitializeConnection());
@@ -42,6 +48,13 @@ public class ArduinoCommunication : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             Release();
+        }
+
+        // Unity Fail-Safe: If the user presses the Escape key, force the valves to open and dump air immediately.
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.LogWarning("<color=red>EMERGENCY STOP TRIGGERED. VENTING GLOVE.</color>");
+            Grab(); // 'G' forces the valves to open and dump air immediately
         }
     }
 
@@ -69,7 +82,7 @@ public class ArduinoCommunication : MonoBehaviour
         Debug.Log("Arduino is ready. Starting.");
 
         // Safety Concerns
-        Release();
+        Grab();
 
         isRunning = true;
         serialThread = new Thread(SerialWriterLoop);
@@ -114,6 +127,11 @@ public class ArduinoCommunication : MonoBehaviour
                         if (!incomingMessage.StartsWith("S"))
                         {
                             Debug.Log("<color=cyan>[ARDUINO]</color> " + incomingMessage);
+                            if(csvWriter != null)
+                            {
+                                string timeNow = System.DateTime.Now.ToString("HH:mm:ss.fff");
+                                csvWriter.WriteLine($"{timeNow},{incomingMessage}");
+                            }
                         }
                         // Print the Arduino's message to the Unity Console
                         //Debug.Log("<color=cyan>[ARDUINO]</color> " + incomingMessage);
@@ -134,6 +152,17 @@ public class ArduinoCommunication : MonoBehaviour
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    public void SetupDataLogger(string sessionID, string directoryPath)
+    {
+        logFilePath = Path.Combine(directoryPath,sessionID + "_Telemetry.csv");
+        csvWriter = new StreamWriter(logFilePath, true);
+        csvWriter.WriteLine("UnityTime,ArduinoTelemetry");
+        Debug.Log($"<color=cyan>[DATA LOGGER]</color> Hardware CSV initialized: {logFilePath}");
+    }
+
+    /// <summary>
     /// Queues a Grab command to be sent to the Arduino.
     /// Thread-safe and non-blocking, can be called from the main Unity thread without causing delays.
     /// </summary>
@@ -141,7 +170,7 @@ public class ArduinoCommunication : MonoBehaviour
     {
         if(!isReady || !serialPort.IsOpen) return;
         commandQueue.Enqueue("G");
-        Debug.Log("Sent Grab Command");
+        Debug.Log("Sent Grab Command (Venting Hardware)");
     }
 
     /// <summary>
@@ -152,7 +181,7 @@ public class ArduinoCommunication : MonoBehaviour
     {
         if(!isReady || !serialPort.IsOpen) return;
         commandQueue.Enqueue("R");
-        Debug.Log("Sent Release Command");
+        Debug.Log("Sent Release Command (Inflating Hardware)");
     }
     //Clenaup
     private void OnDestroy()
@@ -166,9 +195,17 @@ public class ArduinoCommunication : MonoBehaviour
 
         if(serialPort != null && serialPort.IsOpen)
         {
-            try {serialPort.Write("R"); } catch { }
+            try {serialPort.Write("G"); } catch { }
             serialPort.Close();
             Debug.Log("<color=cyan>[ARDUINO]</color> Closed Serial Port safely.");
+        }
+
+        if(csvWriter != null)
+        {
+            csvWriter.Flush();
+            csvWriter.Close();
+            csvWriter.Dispose();
+            Debug.Log("<color=cyan>[DATA LOGGER]</color> Closed CSV File safely.");
         }
     }
 }
