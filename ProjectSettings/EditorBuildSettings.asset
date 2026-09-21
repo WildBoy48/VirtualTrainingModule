@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Waiting Lobby.unity
     guid: 3710757f8a7127e45af84bb4ff1378f2
   - enabled: 1
-    path: Assets/Scenes/Training Module_Meta.unity
+    path: Assets/Scenes/Training Module Hand Tracking.unity
     guid: cee9599b459a2b04cacb617d943873c6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
