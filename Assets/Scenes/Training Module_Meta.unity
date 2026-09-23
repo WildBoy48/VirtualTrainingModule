@@ -6347,13 +6347,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11f5ee72bad3adc49a7b1d96e39d7b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TherapyDataTracker
-  autoHand: {fileID: 1724621248}
+  autoHand: {fileID: 1953442814}
   fixedTargetBoundaries: {fileID: 994507769}
   sendStats: 0
   spatialTrackingInterval: 0.05
   dataDirectory: C:\Universidade\5ano\Tese\Data
   attemptThreshold: 0.05
-  resetThreshold: 0.2
+  resetThreshold: 0.1
   arduinoCommunication: {fileID: 42757416}
 --- !u!114 &1414804458
 MonoBehaviour:

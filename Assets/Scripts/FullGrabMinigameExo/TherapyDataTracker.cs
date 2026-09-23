@@ -59,7 +59,8 @@ public class TherapyDataTracker : MonoBehaviour
     private bool isRepActive = false;
     private bool hasMovedThisRep = false;
     private bool hasAttemptedGrab = false;
-
+    private float grabGraceTimer = 0f;
+    private bool isWaitingForPhysics = false;
 
     private Rigidbody handRb;
     private Vector3 lastHandPosition;
@@ -105,6 +106,7 @@ public class TherapyDataTracker : MonoBehaviour
         {
             handRb = autoHand.GetComponent<Rigidbody>();
             autoHand.OnGrabJointBreak += RecordDrop;
+            autoHand.OnTriggerRelease +=  RecordDrop;
         }             
     }
 
@@ -155,8 +157,13 @@ public class TherapyDataTracker : MonoBehaviour
 
         // Update Space Explored and Max Horizontal Reach
         Vector3 currentHandPos = autoHand.transform.position;
-        repSpaceExplored += Vector2.Distance(lastHandPosition, currentHandPos);
-        lastHandPosition = currentHandPos;
+        float frameMovement = Vector3.Distance(lastHandPosition, currentHandPos);
+        if (frameMovement > 0.005f)
+        {
+            repSpaceExplored += frameMovement;
+            lastHandPosition = currentHandPos; // Only update the anchor if they actually moved
+        }
+       
 
         Vector2 currentXZ = new Vector2(currentHandPos.x, currentHandPos.z);
         float currentReach = Vector2.Distance(repStartXZ,currentXZ);
@@ -174,11 +181,26 @@ public class TherapyDataTracker : MonoBehaviour
             
             if(currentTipDistance < repTightestGrip) repTightestGrip = currentTipDistance;
 
-            if(currentTipDistance <= attemptThreshold && !hasAttemptedGrab)
+            // Prevent false positives by checking if the hand is already grabbing an object before counting as a miss
+            if (autoHand.IsGrabbing())
             {
                 hasAttemptedGrab = true;
-                if (!autoHand.IsGrabbing())
+                isWaitingForPhysics = false;
+            }
+            // Start a grace period to check if the user successfully grabbed an object after closing their hand (AutoHand's update takes time)
+            else if (currentTipDistance <= attemptThreshold && !hasAttemptedGrab && !isWaitingForPhysics)
+            {
+                isWaitingForPhysics = true;
+                grabGraceTimer = 0.15f; // Wait for physics to update before checking if the grab was successful
+            }
+            else if (isWaitingForPhysics)
+            {
+                grabGraceTimer -= Time.deltaTime;
+                
+                if(grabGraceTimer <= 0f)
                 {
+                    isWaitingForPhysics = false;
+                    hasAttemptedGrab = true;
                     totalMisses++;
                     Debug.Log($"<color=cyan>[DATA GRAB]</color> User attempted to grab, grabbed empty air");
                 }
@@ -186,6 +208,7 @@ public class TherapyDataTracker : MonoBehaviour
             else if(currentTipDistance >= resetThreshold && hasAttemptedGrab)
             {
                 hasAttemptedGrab = false;
+                Debug.Log($"<color=yellow>[DATA GRAB]</color> Hand opened (Tip Distance: {currentTipDistance:F3}). Miss state reset.");
             }
         }
     }
@@ -197,15 +220,33 @@ public class TherapyDataTracker : MonoBehaviour
     {
         CurrentSessionID = "Session_" + DateTime.Now.ToString("yyyyMMdd_HHmm");
 
+        Vector3 targetCenter = Vector3.zero;
+        Vector3 targetSize = Vector3.one * 0.3f;
+        if (fixedTargetBoundaries != null)
+        {
+            BoxCollider targetCollider = fixedTargetBoundaries.GetComponent<BoxCollider>();
+            if(targetCollider != null)
+            {
+                targetCenter = targetCollider.bounds.center;
+                targetSize = targetCollider.bounds.size;
+            }
+        }        
+
         // Initialize Session Data
         currentSessionData = new SessionData
         {
             session_id = CurrentSessionID,
             timestamp = DateTime.UtcNow.ToString("O"),
+            environment = new EnvironmentData
+            {
+                target_center = new PositionData(targetCenter),
+                target_size = new PositionData(targetSize)
+            },
             repetitions = new List<RepetitionData>()
 
         };
         currentTrajectory = new List<TrajectoryPoint>();
+
         GameObject startingCup = GameObject.FindWithTag("Cup");
         if (startingCup != null)
         {
@@ -213,8 +254,7 @@ public class TherapyDataTracker : MonoBehaviour
 
             StartNewRepetition(startingCup.transform.position);
         }
-
-        if(arduinoCommunication != null) arduinoCommunication.SetupDataLogger(CurrentSessionID, dataDirectory);
+        if (arduinoCommunication != null) arduinoCommunication.SetupDataLogger(CurrentSessionID, dataDirectory);
 
         Debug.Log("<color=cyan>[TherapyDataTracker]</color> Session officially started via button press.");
 
@@ -250,7 +290,10 @@ public class TherapyDataTracker : MonoBehaviour
             Vector3 trueCupPosition = new Vector3(cupSpawnPosition.x,initialCupY, cupSpawnPosition.z);
             currentTargetPos = trueCupPosition;
 
-            repIdealPathLength =  Vector3.Distance(lastHandPosition, currentTargetPos);
+            float reachDistance = Vector3.Distance(lastHandPosition, trueCupPosition);
+            float transportDistance = Vector3.Distance(trueCupPosition, fixedTargetBoundaries.position);
+
+            repIdealPathLength = reachDistance + transportDistance;
         }
 
         totalRepetitions++;
@@ -343,6 +386,7 @@ public class TherapyDataTracker : MonoBehaviour
         {
             //autoHand.OnGrabbed -= RecordScore;
             autoHand.OnGrabJointBreak -= RecordDrop;
+            autoHand.OnTriggerRelease -= RecordDrop;
         }
     }
 
@@ -392,6 +436,7 @@ public class SessionData
 {
     public string session_id;
     public string timestamp;
+    public EnvironmentData environment;
     public SessionMetrics session_metrics;
     public List<RepetitionData> repetitions;
 }
@@ -404,6 +449,13 @@ public class SessionMetrics
     public int total_misses;
     public int total_reps;
     public float total_accuracy;
+}
+
+[Serializable]
+public class EnvironmentData
+{
+    public PositionData target_center;
+    public PositionData target_size;
 }
 
 [Serializable]
