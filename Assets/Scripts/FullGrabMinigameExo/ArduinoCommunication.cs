@@ -82,7 +82,7 @@ public class ArduinoCommunication : MonoBehaviour
         Debug.Log("Arduino is ready. Starting.");
 
         // Safety Concerns
-        Grab();
+        Release();
 
         isRunning = true;
         serialThread = new Thread(SerialWriterLoop);
@@ -195,7 +195,7 @@ public class ArduinoCommunication : MonoBehaviour
 
         if(serialPort != null && serialPort.IsOpen)
         {
-            try {serialPort.Write("G"); } catch { }
+            try {serialPort.Write("R"); } catch { }
             serialPort.Close();
             Debug.Log("<color=cyan>[ARDUINO]</color> Closed Serial Port safely.");
         }

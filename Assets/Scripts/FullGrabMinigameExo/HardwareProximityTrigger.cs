@@ -55,7 +55,7 @@ public class HardwareProximityTrigger : MonoBehaviour
         else if (distanceToHand > approachRadius && currentHandState != HandState.None)
         {
             currentHandState = HandState.None;
-            arduinoCommunication.Grab();
+            arduinoCommunication.Release();
             Debug.Log("<color=grey>State: IDLE -> Hand Returned to Closed</color>");
         }
     }
