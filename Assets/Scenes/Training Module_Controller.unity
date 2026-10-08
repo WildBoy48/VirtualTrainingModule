@@ -558,7 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37979ec90f279dd47b7689578d039d3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArduinoCommunication
-  portName: COM5
+  portName: COM3
   baudRate: 115200
 --- !u!4 &42757417
 Transform:
@@ -1329,6 +1329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec5ee3d4d9950a4d8a0d68768a811ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
+  maxScore: 10
 --- !u!1 &348697954
 GameObject:
   m_ObjectHideFlags: 0
@@ -3221,7 +3222,7 @@ Transform:
   m_GameObject: {fileID: 811994228}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.263, y: 1, z: 25.096828}
+  m_LocalPosition: {x: 1.263, y: 1.029, z: 25.096828}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5026,7 +5027,7 @@ MonoBehaviour:
   m_text: 'Task: Pick up the Cup and hold it in/above the blue zone.
 
     Press the
-    Red Button to start'
+    Red Button to start.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6895,7 +6896,7 @@ Transform:
   m_GameObject: {fileID: 1613106212}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.788, z: 0.11}
+  m_LocalPosition: {x: -0, y: 0.918, z: 0.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7045,7 +7046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 25.1013
+      value: 25.0182
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7285,7 +7286,7 @@ MonoBehaviour:
   arduinoCommunication: {fileID: 42757416}
   playerHand: {fileID: 1953442815}
   approachRadius: 0.2
-  touchRadius: 0.05
+  touchRadius: 0.09
 --- !u!4 &1657274298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1a64fc5a11671594981cd3095acf4ba5, type: 3}
@@ -19095,7 +19096,7 @@ Transform:
   m_GameObject: {fileID: 2131303935}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.29869998, y: -0.009, z: 0.2595005}
+  m_LocalPosition: {x: 0.29869998, y: -0.009, z: 0.1434}
   m_LocalScale: {x: 0.42951, y: 0.02, z: 0.20897}
   m_ConstrainProportionsScale: 0
   m_Children: []

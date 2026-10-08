@@ -29,7 +29,7 @@ public class RadialScoreUIController : MonoBehaviour
         }
     }
 
-    public void UpdateScore(int newScore)
+    public void UpdateScore(int newScore, int maxScore)
     {
         if (percentageLabel != null)
         {

@@ -28,7 +28,7 @@ public class ScoreUIController : MonoBehaviour
     /// Triggered when the score changes in the ScoreManager. Updates the score label in the UI.
     /// </summary>
     /// <param name="newScore"></param>
-    private void UpdateScore(int newScore)
+    private void UpdateScore(int newScore, int maxScore)
     {
         if(scoreLabel != null)
         {

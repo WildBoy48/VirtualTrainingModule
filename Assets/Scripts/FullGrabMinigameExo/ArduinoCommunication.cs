@@ -54,7 +54,7 @@ public class ArduinoCommunication : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.LogWarning("<color=red>EMERGENCY STOP TRIGGERED. VENTING GLOVE.</color>");
-            Grab(); // 'G' forces the valves to open and dump air immediately
+            Release(); // 'R' forces the valves to open and dump air immediately
         }
     }
 
@@ -170,7 +170,7 @@ public class ArduinoCommunication : MonoBehaviour
     {
         if(!isReady || !serialPort.IsOpen) return;
         commandQueue.Enqueue("G");
-        Debug.Log("Sent Grab Command (Venting Hardware)");
+        Debug.Log("Sent Grab Command (Active Flexion / Inflating)");
     }
 
     /// <summary>
@@ -181,7 +181,7 @@ public class ArduinoCommunication : MonoBehaviour
     {
         if(!isReady || !serialPort.IsOpen) return;
         commandQueue.Enqueue("R");
-        Debug.Log("Sent Release Command (Inflating Hardware)");
+        Debug.Log("Sent Release Command (Passive Extension / Venting Hardware)");
     }
     //Clenaup
     private void OnDestroy()

@@ -10,9 +10,10 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
-    public int CurrentScore { get; private set; }
+    [SerializeField] public int maxScore = 100; // Maximum score for the game, can be set in the Inspector
+    public int currentScore { get; private set; }
 
-    public event Action<int> OnScoreChanged;
+    public event Action<int, int> OnScoreChanged;
 
     private void Awake()
     {
@@ -30,9 +31,10 @@ public class ScoreManager : MonoBehaviour
     /// <param name="amount"> The amount to add to the current score.</param>
     public void AddScore(int amount)
     {
-        CurrentScore += amount;
-        OnScoreChanged?.Invoke(CurrentScore);
+        currentScore += amount;
+        OnScoreChanged?.Invoke(currentScore,maxScore);
 
-        Debug.Log($"<color=yellow>[ScoreManager]</color> Score updated: {CurrentScore}");
+        Debug.Log($"<color=yellow>[ScoreManager]</color> Score updated: {currentScore}");
+
     }
 }

@@ -106,7 +106,7 @@ public class TherapyDataTracker : MonoBehaviour
         {
             handRb = autoHand.GetComponent<Rigidbody>();
             autoHand.OnGrabJointBreak += RecordDrop;
-            autoHand.OnTriggerRelease +=  RecordDrop;
+            //autoHand.OnTriggerRelease +=  RecordDrop;
         }             
     }
 
@@ -386,7 +386,7 @@ public class TherapyDataTracker : MonoBehaviour
         {
             //autoHand.OnGrabbed -= RecordScore;
             autoHand.OnGrabJointBreak -= RecordDrop;
-            autoHand.OnTriggerRelease -= RecordDrop;
+            //autoHand.OnTriggerRelease -= RecordDrop;
         }
     }
 

@@ -15,9 +15,9 @@ public class RadialProgressCanvas : MonoBehaviour
         
     }
 
-    void OnScoreChanged (int score)
+    void OnScoreChanged (int score, int maxScore)
     {
-        currentProgress = Mathf.Clamp01(score / 100f);
+        currentProgress = Mathf.Clamp01(score / maxScore);
         UpdateRing();
     }
 
