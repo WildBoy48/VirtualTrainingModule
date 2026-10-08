@@ -1264,7 +1264,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &305813170
 Transform:
   m_ObjectHideFlags: 0
@@ -1309,7 +1309,7 @@ Transform:
   m_GameObject: {fileID: 307726884}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.481, y: 0.393, z: 23.825}
+  m_LocalPosition: {x: 1.481, y: 0.177, z: 23.825}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3321,7 +3321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &897477794
 Transform:
   m_ObjectHideFlags: 0
@@ -3940,7 +3940,7 @@ Transform:
   m_GameObject: {fileID: 1016941404}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.329, y: 1.2693, z: 24.605}
+  m_LocalPosition: {x: 1.391, y: 1.2693, z: 24.614}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5023,16 +5023,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1268513984}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -22.2}
+  m_LocalRotation: {x: -0.0013333518, y: -0.07530214, z: 0.012626876, w: 0.99707997}
+  m_LocalPosition: {x: 0, y: 0, z: -84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 693213595}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.043, y: -8.638, z: 1.454}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 125.6, y: 111}
+  m_AnchoredPosition: {x: 40, y: 111}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1268513986
@@ -5055,15 +5055,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<b>Task:</b> Pick up the Cup and hold it above the <color=#0096C7>blue
-    zone</color>.
+  m_text: '<b>Task:</b> Pick up the Cup and hold it above the <color=blue>blue zone</color>.
 
 
-    The objective is to reach a <color=green>Score of 10 </color>.
+    The
+    objective is to reach a <b><color=green>Score of 10</color>.</b>
 
-
-    Press
-    the <color=red>Red Button</color> to start.'
+    Press the
+    <color=red>Red Button</color> to start.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5820,7 +5819,7 @@ MonoBehaviour:
   plasticCup: {fileID: 1657274287}
   coffeeCup: {fileID: 0}
   killZones: {fileID: 920047739}
-  selectedValue: 0
+  selectedValue: 3
   forceSetupMode: 0
   startUIBoard: {fileID: 1432488622}
   startButton: {fileID: 1952736927}
@@ -5848,14 +5847,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1432488622}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.06035025, z: -0, w: 0.9981773}
-  m_LocalPosition: {x: 2.413, y: 1.502, z: 24.604}
+  m_LocalRotation: {x: 0, y: -0.19080894, z: 0, w: 0.9816273}
+  m_LocalPosition: {x: 2.468, y: 1.424, z: 25.194}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 693213595}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 6.92, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -22, z: 0}
 --- !u!1 &1454878026
 GameObject:
   m_ObjectHideFlags: 0
@@ -6431,7 +6430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1549554792
 Transform:
   m_ObjectHideFlags: 0
@@ -13051,7 +13050,7 @@ Transform:
   m_GameObject: {fileID: 1754761228}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.351, y: 0.662, z: 24.606}
+  m_LocalPosition: {x: 1.351, y: 0.662, z: 24.784}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13810,7 +13809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 24.27
+      value: 24.322
       objectReference: {fileID: 0}
     - target: {fileID: 178511659616210194, guid: 352f22c0ea4b32f46995b40e5190f09d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -18797,7 +18796,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2017642285
 Transform:
   m_ObjectHideFlags: 0
