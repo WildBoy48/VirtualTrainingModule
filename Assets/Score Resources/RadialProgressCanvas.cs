@@ -17,7 +17,7 @@ public class RadialProgressCanvas : MonoBehaviour
 
     void OnScoreChanged (int score, int maxScore)
     {
-        currentProgress = Mathf.Clamp01(score / maxScore);
+        currentProgress = Mathf.Clamp01((float)score / (float)maxScore);
         UpdateRing();
     }
 
@@ -25,5 +25,13 @@ public class RadialProgressCanvas : MonoBehaviour
     void UpdateRing()
     {
         progressRing.fillAmount = currentProgress;
+    }
+    private void OnDestroy()
+    {
+        // ALWAYS unsubscribe to prevent memory leaks and NullReferenceExceptions!
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.OnScoreChanged -= OnScoreChanged;
+        }
     }
 }

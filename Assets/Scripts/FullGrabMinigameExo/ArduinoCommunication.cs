@@ -31,6 +31,7 @@ public class ArduinoCommunication : MonoBehaviour
     // Data logging
     private StreamWriter csvWriter;
     private string logFilePath;
+    private float[] fingerPressures = new float[5];
 
     private void Start()
     {
@@ -132,6 +133,35 @@ public class ArduinoCommunication : MonoBehaviour
                                 string timeNow = System.DateTime.Now.ToString("HH:mm:ss.fff");
                                 csvWriter.WriteLine($"{timeNow},{incomingMessage}");
                             }
+                        }
+                        if (incomingMessage.StartsWith("S"))
+                        {
+                            try
+                            {
+                                string[] parts = incomingMessage.Split(':');
+                                if (parts.Length == 2)
+                                {
+                                    int fingerIndex = int.Parse(parts[0].Substring(1));
+                                    float pressure = float.Parse(parts[1], System.Globalization.CultureInfo.InvariantCulture);
+
+
+                                    if (fingerIndex >= 0 && fingerIndex < fingerPressures.Length)
+                                    {
+                                        fingerPressures[fingerIndex] = pressure;
+                                    }
+
+                                    if(csvWriter != null)
+                                    {
+                                        string timeNow = System.DateTime.Now.ToString("HH:mm:ss.fff");
+                                        csvWriter.WriteLine($"{timeNow},{parts[0]}, {pressure}");
+                                    }
+                                }
+                            }
+                            catch(System.Exception parseError) 
+                            { 
+                                Debug.LogWarning($"<color=orange>[ARDUINO]</color> Dropped garbled telemetry: {incomingMessage} | {parseError.Message}"); 
+                            }
+        
                         }
                         // Print the Arduino's message to the Unity Console
                         //Debug.Log("<color=cyan>[ARDUINO]</color> " + incomingMessage);
