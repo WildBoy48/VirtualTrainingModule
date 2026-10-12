@@ -33,7 +33,7 @@ public class RadialScoreUIController : MonoBehaviour
     {
         if (percentageLabel != null)
         {
-            percentageLabel.text = $"{newScore}%";
+            percentageLabel.text = $"{(float)newScore/maxScore * 100:F0}%";
         }
         
     }

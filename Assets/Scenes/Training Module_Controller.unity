@@ -1883,6 +1883,82 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 452377130}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &492212160
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 492212161}
+  - component: {fileID: 492212163}
+  - component: {fileID: 492212162}
+  m_Layer: 0
+  m_Name: Taskbackground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &492212161
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492212160}
+  m_LocalRotation: {x: -0.10948608, y: -0.10978275, z: -0.00052539725, w: 0.987907}
+  m_LocalPosition: {x: 0, y: 0, z: -121.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1268513985}
+  m_Father: {fileID: 693213595}
+  m_LocalEulerAnglesHint: {x: -12.5, y: -12.83, z: 1.35}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -55.5, y: 49.6}
+  m_SizeDelta: {x: 509.1, y: 403.5}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &492212162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492212160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.93333334}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &492212163
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492212160}
+  m_CullTransparentMesh: 1
 --- !u!1001 &510137109
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3062,7 +3138,7 @@ RectTransform:
   m_LocalScale: {x: 0.0020000006, y: 0.002, z: 0.0020000006}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 1268513985}
+  - {fileID: 492212161}
   m_Father: {fileID: 1432488623}
   m_LocalEulerAnglesHint: {x: 8.6, y: 75.04, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3940,7 +4016,7 @@ Transform:
   m_GameObject: {fileID: 1016941404}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.391, y: 1.2693, z: 24.614}
+  m_LocalPosition: {x: 1.4, y: 1.2693, z: 24.626}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5023,17 +5099,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1268513984}
-  m_LocalRotation: {x: -0.0013333518, y: -0.07530214, z: 0.012626876, w: 0.99707997}
-  m_LocalPosition: {x: 0, y: 0, z: -84}
+  m_LocalRotation: {x: 0.0009561407, y: -0.000027872618, z: 0.0000032137464, w: 0.9999996}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000036334528}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 693213595}
+  m_Father: {fileID: 492212161}
   m_LocalEulerAnglesHint: {x: -0.043, y: -8.638, z: 1.454}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 40, y: 111}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchoredPosition: {x: 0.000289917, y: 0.000076293945}
+  m_SizeDelta: {x: 461.75, y: 382.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1268513986
 MonoBehaviour:
@@ -5055,14 +5131,22 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<b>Task:</b> Pick up the Cup and hold it above the <color=blue>blue zone</color>.
+  m_text: 'Maintain a relaxed Hand
+
+    After reading the steps, press the <color=red>Red
+    Button</color> to start.
 
 
-    The
-    objective is to reach a <b><color=green>Score of 10</color>.</b>
+    <b>Step 1:</b> Reach for the Cup
 
-    Press the
-    <color=red>Red Button</color> to start.'
+    <b>Step
+    2: </B>Hold above the  <color=blue>blue zone</color> for 3 seconds.
+
+
+    Reach
+    a <b><color=green>Score of 10</color>.</b>
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5128,7 +5212,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -227.88052, y: 0, z: 0, w: 0}
+  m_margin: {x: -9.480438, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5848,7 +5932,7 @@ Transform:
   m_GameObject: {fileID: 1432488622}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.19080894, z: 0, w: 0.9816273}
-  m_LocalPosition: {x: 2.468, y: 1.424, z: 25.194}
+  m_LocalPosition: {x: 2.66, y: 1.424, z: 25.357}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11029,6 +11113,10 @@ PrefabInstance:
     - target: {fileID: 4805486865076772358, guid: 2ff043c4542b8c440a4d4ff89ddf4c65, type: 3}
       propertyPath: m_Name
       value: Classic Hand (OpenXR)(L)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4805486865076772358, guid: 2ff043c4542b8c440a4d4ff89ddf4c65, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4805486865076772359, guid: 2ff043c4542b8c440a4d4ff89ddf4c65, type: 3}
       propertyPath: left
