@@ -1,0 +1,24 @@
+{
+    "session_id": "Session_20261013_1127",
+    "timestamp": "2026-10-13T10:27:08.8276792Z",
+    "environment": {
+        "target_center": {
+            "x": 1.7869999408721924,
+            "y": 1.1977040767669678,
+            "z": 24.47599983215332
+        },
+        "target_size": {
+            "x": 0.45453929901123049,
+            "y": 0.25829124450683596,
+            "z": 0.24518203735351563
+        }
+    },
+    "session_metrics": {
+        "total_score": 0,
+        "total_drops": 0,
+        "total_misses": 0,
+        "total_reps": 1,
+        "total_accuracy": 0.0
+    },
+    "repetitions": []
+}
